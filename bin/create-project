@@ -19,10 +19,8 @@ $tmpCwd = sys_get_temp_dir().'/artist-create-project/'.uniqid(sha1($url)).'/';
 $cwd = getcwd().'/';
 if(!is_dir($tmpCwd)) @mkdir($tmpCwd,0755,true);
 
-//$downlad('https://raw.githubusercontent.com/redcatphp/artist/master/artist.phar',$tmpCwd.'artist.phar');
-//$downlad('https://raw.githubusercontent.com/redcatphp/artist/master/artist.phar.pubkey',$tmpCwd.'artist.phar.pubkey');
-copy('/var/www/redcat/packages/redcatphp/artist/artist.phar',$tmpCwd.'artist.phar');
-copy('/var/www/redcat/packages/redcatphp/artist/artist.phar.pubkey',$tmpCwd.'artist.phar.pubkey');
+$downlad('https://raw.githubusercontent.com/redcatphp/artist/master/artist.phar',$tmpCwd.'artist.phar');
+$downlad('https://raw.githubusercontent.com/redcatphp/artist/master/artist.phar.pubkey',$tmpCwd.'artist.phar.pubkey');
 
 if(strpos($url,'://')===false){
 	if(false!==$p=strpos($url,'@')){
