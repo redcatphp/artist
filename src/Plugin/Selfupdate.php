@@ -18,7 +18,7 @@ class Selfupdate extends ArtistPlugin{
 		//$updater->getStrategy()->setCurrentLocalVersion('@package_version@');
 		
 		$updater->getStrategy()->setPharUrl('https://raw.githubusercontent.com/redcatphp/artist/master/artist.phar');
-		$updater->getStrategy()->setVersionUrl('https://raw.githubusercontent.com/redcatphp/artist/master/artist.phar.version');
+		$updater->getStrategy()->setVersionUrl('https://raw.githubusercontent.com/redcatphp/artist/master/artist.version');
 		
 		$result = $updater->update();
 		if(!$result){
