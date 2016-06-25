@@ -191,8 +191,12 @@ class ComposerInstall extends Composer{
 				$this->cmd("$composer update $paramsUpdate");
 			}
 			else{
-				$this->cmd("$composer require fxp/composer-asset-plugin $paramsRequire");
-				$this->cmd("$composer require hirak/prestissimo $paramsRequire");
+				if($prestissimo){
+					$this->cmd("$composer require hirak/prestissimo $paramsRequire");
+				}
+				if($assetPlugin){
+					$this->cmd("$composer require fxp/composer-asset-plugin $paramsRequire");
+				}
 			}
 		}
 		else{
