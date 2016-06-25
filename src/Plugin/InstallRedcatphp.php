@@ -7,8 +7,9 @@ class InstallRedcatphp extends ArtistPlugin{
 	protected $description = "Install redcatphp package from vendor dir to top level of application";
 	protected $args = [];
 	protected $opts = ['force'];
-	protected function exec(){		
+	protected function exec(){
 		if($this->recursiveCopy(realpath(__DIR__.'/../../redcatphp'),$this->cwd)){
+			symlink('bin/artist.phar','artist');
 			$this->output->writeln('redcatphp bootstrap installed');
 		}
 		else{

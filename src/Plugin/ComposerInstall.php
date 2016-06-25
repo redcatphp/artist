@@ -171,7 +171,7 @@ class ComposerInstall extends Composer{
 					$json['extra']['artist']['tmp-require'] = $json['require'];
 				}
 				$json['require'] = (object)[];
-				file_put_contents('composer.json',json_encode($json,JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT));
+				file_put_contents($this->cwd.'composer.json',json_encode($json,JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT));
 				
 				if($prestissimo){
 					$this->cmd("$composer require hirak/prestissimo $paramsRequire");
@@ -180,13 +180,13 @@ class ComposerInstall extends Composer{
 					$this->cmd("$composer require fxp/composer-asset-plugin $paramsRequire");
 				}
 
-				$json = json_decode(file_get_contents('composer.json'),true);
+				$json = json_decode(file_get_contents($this->cwd.'composer.json'),true);
 				$json['require'] += $json['extra']['artist']['tmp-require'];
 				unset($json['extra']['artist']['tmp-require']);
 				if(empty($json['extra']['artist'])){
 					unset($json['extra']['artist']);
 				}
-				file_put_contents('composer.json',json_encode($json,JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT));
+				file_put_contents($this->cwd.'composer.json',json_encode($json,JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT));
 				
 				$this->cmd("$composer update $paramsUpdate");
 			}
@@ -238,8 +238,8 @@ class ComposerInstall extends Composer{
 	protected function getComposerJson(){
 		if($this->composerJson)
 			return $this->composerJson;
-		if(is_file('composer.json')){
-			$json = json_decode(file_get_contents('composer.json'),true);
+		if(is_file($this->cwd.'composer.json')){
+			$json = json_decode(file_get_contents($this->cwd.'composer.json'),true);
 		}
 		else{
 			$json = [
