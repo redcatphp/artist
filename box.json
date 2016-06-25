@@ -1,0 +1,25 @@
+{
+    "chmod": "0755",
+    "directories": [
+        "src"
+    ],
+    "files": [
+		"artist.phar.pubkey"
+    ],
+    "finder": [
+        {
+            "name": "*.php",
+            "exclude": ["Tests",".git"],
+            "in": "vendor"
+        }
+    ],
+    "git-version": "package_version",
+    "main": "bin/artist",
+    "output": "artist.phar",
+    "stub": true,
+	
+	"algorithm": "OPENSSL",
+	"compression": "GZ",
+	"intercept": true,
+	"key": ".travis/phar-private.pem"
+}

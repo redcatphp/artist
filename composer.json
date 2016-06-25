@@ -1,0 +1,29 @@
+{
+    "name": "redcatphp/artist",
+    "homepage": "https://github.com/redcatphp/artist",
+    "type": "cli",
+    "require": {
+        "symfony/console": "3.1",
+        "padraic/phar-updater": "^1.0"
+    },
+    "suggest": {
+        "kherge/box": "^2.7"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "jo",
+            "email": "jo@surikat.pro"
+        }
+    ],
+    "bin": [
+        "bin/artist"
+    ],
+    "autoload": {
+        "psr-4": {
+            "RedCat\\Artist\\": "src"
+        }
+    },
+    "minimum-stability": "dev",
+    "extra": []
+}

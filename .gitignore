@@ -1,0 +1,6 @@
+/vendor
+/composer.lock
+/.travis/phar-private.pem
+/phar-private.pem.passphrase-protected
+/phar-private-nopassphrase.pem
+/.project
