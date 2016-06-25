@@ -9,24 +9,17 @@ use RedCat\Framework\App;
 if(ob_get_length()) ob_get_clean();
 
 $DIR = dirname(dirname(__FILE__));
-
 require_once $DIR.'/vendor/autoload.php';
-
 if(is_file('redcat.php')){
 	$redcat = require 'redcat.php';
-}
-elseif(is_file($DIR.'/redcat.php')){
-	define('REDCAT',$DIR.'/');
-	define('REDCAT_CWD',getcwd().'/');
-	require_once $DIR.'/../autoload.php';
-	$redcat = App::bootstrap();
 }
 else{
 	$redcat = false;
 }
 
+$pluginPath = dirname(__FILE__).'/'.(Phar::running()?'../..':'').'/../src/Plugin';
 $commandPaths = [
-	$DIR.'/../src/Plugin'=>'RedCat\Artist\Plugin',
+	$pluginPath=>'RedCat\Artist\Plugin',
 ];
 if($redcat){
 	if($redcat['artist.pluginDirsMap']){
