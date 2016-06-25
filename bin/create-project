@@ -19,8 +19,8 @@ $tmpCwd = sys_get_temp_dir().'/artist-create-project/'.uniqid(sha1($url)).'/';
 $cwd = getcwd().'/';
 if(!is_dir($tmpCwd)) @mkdir($tmpCwd,0755,true);
 
-$downlad('https://raw.githubusercontent.com/redcatphp/artist/master/artist.phar',$cwd.'artist.phar');
-$downlad('https://raw.githubusercontent.com/redcatphp/artist/master/artist.phar.pubkey',$cwd.'artist.phar.pubkey');
+$downlad('https://raw.githubusercontent.com/redcatphp/artist/master/artist.phar',$tmpCwd.'artist.phar');
+$downlad('https://raw.githubusercontent.com/redcatphp/artist/master/artist.phar.pubkey',$tmpCwd.'artist.phar.pubkey');
 
 if(strpos($url,'://')===false){
 	if(false!==$p=strpos($url,'@')){
@@ -62,11 +62,9 @@ switch(pathinfo($url,PATHINFO_EXTENSION)){
 }
 
 echo "Installing\n";
-passthru('php artist.phar composer:install');
+passthru('php '.$tmpCwd.'artist.phar composer:install');
 
 echo "Cleaning\n";
-unlink($cwd.'artist.phar');
-unlink($cwd.'artist.phar.pubkey');
 $filesToClean = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($tmpCwd, RecursiveDirectoryIterator::SKIP_DOTS),RecursiveIteratorIterator::CHILD_FIRST);
 foreach($filesToClean as $fileinfo) {
     $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
