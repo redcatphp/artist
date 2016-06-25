@@ -24,7 +24,6 @@ class InstallRedcatphp extends ArtistPlugin{
 		$force = $this->input->getOption('force');
 		$rdirectory = new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS);
 		$iterator = new RecursiveIteratorIterator($rdirectory,RecursiveIteratorIterator::SELF_FIRST);
-		$l = strlen($source);
 		foreach($iterator as $item){
 			$sub = $iterator->getSubPathName();
 			if(substr($sub,0,5)=='.git/') continue;

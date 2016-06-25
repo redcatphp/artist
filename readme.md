@@ -1,3 +1,3 @@
 ```
-curl https://raw.githubusercontent.com/redcatphp/artist/master/installer.php | php
+curl https://raw.githubusercontent.com/redcatphp/artist/master/bin/installer | php
 ```

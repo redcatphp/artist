@@ -9,11 +9,11 @@ use RedCat\Framework\App;
 if(ob_get_length()) ob_get_clean();
 
 $DIR = dirname(dirname(__FILE__));
-require_once $DIR.'/vendor/autoload.php';
 if(is_file('redcat.php')){
 	$redcat = require 'redcat.php';
 }
 else{
+	require_once $DIR.'/vendor/autoload.php';
 	$redcat = false;
 }
 

@@ -63,11 +63,6 @@ class ComposerInstall extends Composer{
 			mkdir($d,0777,true);
 		putenv("COMPOSER_HOME=".$d);
 		
-		if(!is_writable('composer.json')){
-			echo "composer.json is not writeable";
-			return;
-		}
-		
 		if(!$this->getComposerBin()){
 			$this->installComposer();
 		}

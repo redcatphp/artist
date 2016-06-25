@@ -1,0 +1,74 @@
+#!/usr/bin/env php
+<?php
+if(!isset($argv[1])) return;
+$url = $argv[1];
+$version = isset($argv[2])?$argv[2]:'master';
+
+$downlad = function($url,$filename){
+	$fp = fopen($url,'r');
+	if(!$fp){
+		echo "error: $url unreachable";
+		exit;
+	}
+	echo "Downloading from $url...\n";
+	file_put_contents($filename,$fp);
+	echo "Downloaded in $filename\n";
+};
+
+$tmpCwd = sys_get_temp_dir().'/artist-create-project/'.uniqid(sha1($url)).'/';
+$cwd = getcwd().'/';
+if(!is_dir($tmpCwd)) @mkdir($tmpCwd,0755,true);
+
+$downlad('https://raw.githubusercontent.com/redcatphp/artist/master/artist.phar',$cwd.'artist.phar');
+$downlad('https://raw.githubusercontent.com/redcatphp/artist/master/artist.phar.pubkey',$cwd.'artist.phar.pubkey');
+
+if(strpos($url,'://')===false){
+	if(false!==$p=strpos($url,'@')){
+		$auth = substr($url,0,$p+1);
+		$url = substr($url,$p+1);
+	}
+	else{
+		$auth = '';
+	}
+	$url = "https://{$auth}github.com/{$url}/archive/{$version}.zip";
+}
+$downlad($url,$tmpCwd.'archive.zip');
+switch(pathinfo($url,PATHINFO_EXTENSION)){
+	case 'zip':
+		echo "Extracting ZIP\n";
+		$zip = new ZipArchive;
+		$zip->open($tmpCwd.'archive.zip');
+		$zip->extractTo($tmpCwd);
+		$zip->close();
+		$zipDir = glob($tmpCwd.'*',GLOB_ONLYDIR);
+		$zipDir = $zipDir[0];
+		
+		echo "Copying to CWD\n";
+		$iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($zipDir, RecursiveDirectoryIterator::SKIP_DOTS),RecursiveIteratorIterator::SELF_FIRST);
+		foreach($iterator as $item){
+			$sub = $iterator->getSubPathName();
+			if($item->isDir()){
+				$d = $cwd.$iterator->getSubPathName();
+				if(!is_dir($d)) mkdir($d);
+			}
+			else{
+				copy($item, $cwd.$sub);
+			}
+		}
+	break;
+	default:
+		throw new \Exception('Type of url not implemented');
+	break;
+}
+
+echo "Installing\n";
+passthru('php artist.phar composer:install');
+
+echo "Cleaning\n";
+unlink($cwd.'artist.phar');
+unlink($cwd.'artist.phar.pubkey');
+$filesToClean = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($tmpCwd, RecursiveDirectoryIterator::SKIP_DOTS),RecursiveIteratorIterator::CHILD_FIRST);
+foreach($filesToClean as $fileinfo) {
+    $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
+    $todo($fileinfo->getRealPath());
+}
