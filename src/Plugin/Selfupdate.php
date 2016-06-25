@@ -11,14 +11,14 @@ class Selfupdate extends ArtistPlugin{
 	function exec(){
 		$updater = new Updater();
 		
-		//$updater->getStrategy()->setPharUrl($urlToGithubPagesPharFile);
-		//$updater->getStrategy()->setVersionUrl($urlToGithubPagesVersionFile);
+		//$updater->setStrategy(Updater::STRATEGY_GITHUB); //use packagist.org
+		//$updater->getStrategy()->setStability('any');
+		//$updater->getStrategy()->setPackageName('redcatphp/artist');
+		//$updater->getStrategy()->setPharName('artist.phar');
+		//$updater->getStrategy()->setCurrentLocalVersion('@package_version@');
 		
-		$updater->setStrategy(Updater::STRATEGY_GITHUB); //use packagist.org
-		$updater->getStrategy()->setStability('any');
-		$updater->getStrategy()->setPackageName('redcatphp/artist');
-		$updater->getStrategy()->setPharName('artist.phar');
-		$updater->getStrategy()->setCurrentLocalVersion('@package_version@');
+		$updater->getStrategy()->setPharUrl('https://raw.githubusercontent.com/redcatphp/artist/master/artist.phar');
+		$updater->getStrategy()->setVersionUrl('https://raw.githubusercontent.com/redcatphp/artist/master/artist.phar.version');
 		
 		$result = $updater->update();
 		if(!$result){
