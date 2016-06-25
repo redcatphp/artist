@@ -1,2 +1,2 @@
 RewriteEngine On
-RewriteRule ^install-project$ install-project.php [L]
+RewriteRule ^install-project$ install-project.php [L,QSA]
