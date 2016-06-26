@@ -19,7 +19,6 @@ class InstallRedcatphp extends ArtistPlugin{
 			return;
 		}
 		
-		$this->runGitConfig();
 		
 		if(!file_exists($this->cwd.'artist')){
 			symlink('packages/bin/artist','artist');
@@ -57,6 +56,7 @@ class InstallRedcatphp extends ArtistPlugin{
 		}
 		
 		$this->setDbConfig();
+		$this->runGitConfig();
 		
 		touch($f);
 	}
