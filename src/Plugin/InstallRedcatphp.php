@@ -8,9 +8,9 @@ class InstallRedcatphp extends ArtistPlugin{
 	protected $args = [];
 	protected $opts = ['force'];
 	protected function exec(){
+		symlink('bin/artist.phar','artist');
 		if(!is_dir($this->cwd.'packages/redcatphp/redcatphp')) return;
 		if($this->recursiveCopy($this->cwd.'packages/redcatphp/redcatphp',$this->cwd)){
-			symlink('bin/artist.phar','artist');
 			$this->output->writeln('redcatphp bootstrap installed');
 		}
 		else{
