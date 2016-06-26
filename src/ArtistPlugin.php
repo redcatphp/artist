@@ -140,23 +140,48 @@ abstract class ArtistPlugin extends Command{
 			return $helper->ask($this->input, $this->output, $question);
 		}
 	}
-	protected function cmd($command,$output=true){
+	protected function cmd($cmd,$output=true){
 		if($output){
-			echo "$command\n";
+			echo "$cmd\n";
 		}
-		$command .= ' 2>&1';
-		$desc = [
-			0 => ['file', 'php://stdin', 'r'],
-			1 => ['file', 'php://stdout', 'w'],
-			2 => ['file', 'php://stderr', 'w'],
-		];
-		$proc = proc_open( $command, $desc, $pipes );
-
-		do {
-			sleep(1);
-			$status = proc_get_status($proc);
-			var_dump($status);
-		} while ($status['running']);
+		$cmd .= ' 2>&1';
+		//$desc = [
+			//0 => ['file', 'php://stdin', 'r'],
+			//1 => ['file', 'php://stdout', 'w'],
+			//2 => ['file', 'php://stderr', 'w'],
+		//];
+		//$proc = proc_open( $cmd, $desc, $pipes );
+//
+		//do {
+			//sleep(1);
+			//$status = proc_get_status($proc);
+		//} while ($status['running']);
+		
+		$pdes = array(
+		  0 => array('pipe', 'r'), //child's stdin
+		  1 => array('pipe', 'w'), //child's stdout
+		);
+		$process = proc_open($cmd, $pdes, $pipes);
+		sleep(1);
+		if(is_resource($process)){
+		  while($iter-->0){
+			$r=array($pipes[1]);
+			$w=array($pipes[0]);
+			$e=array();
+			if(0<($streams=stream_select($r,$w,$e,2))){
+			  if($streams){
+				if($r){
+				  echo "reading\n";
+				  $rbuf.=fread($pipes[1],$rlen);  //reading rlen bytes from pipe
+				}else{
+				  echo "writing\n";
+				  fwrite($pipes[0],$wbuf."\n");  //writing to pipe
+				  fflush($pipes[0]);
+		  }}}}
+		  fclose($pipes[0]);
+		  fclose($pipes[1]);
+		  echo "exitcode: ".proc_close($process)."\n";
+		}
 	}
 	
 	static function cleanDotInUrl($url){
