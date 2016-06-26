@@ -162,16 +162,15 @@ abstract class ArtistPlugin extends Command{
 		$output = '';
 		$ret = -1;
 		$process = proc_open($cmd,array(
-			0 => STDIN, // pipe from which child will read
-			1 => STDOUT,
+			0 => 'php://stdin', // pipe from which child will read
+			1 => 'php://stdout',
 			2 => array('pipe', 'w'), // pipe to which child will write any errors
 			3 => array('pipe', 'w') // pipe to which child will write any output
 		),$pipes);
 		
 
-		$output = '';
 		while($_ = fgets($pipes[3])) {
-			$output .= $_;
+			echo $_;
 		}
 		$errors = '';
 		while ($_ = fgets($pipes[2])) {
