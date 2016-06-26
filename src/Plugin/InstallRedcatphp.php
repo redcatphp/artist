@@ -163,7 +163,7 @@ class InstallRedcatphp extends ArtistPlugin{
 		$path = $this->cwd.'.config.env.php';
 		$config = new TokenTree($path);
 		$configDb = &$config['$']['db'];
-		var_dump($this->ioHelper->isInteractive());
+		var_dump($this->ioHelper->isInteractive(),getenv('COMPOSER_NO_INTERACTION'));
 		$configDb['host'] = '"'.$this->askQuestion("Main database host (localhost): ","localhost").'"';
 		$configDb['name'] = '"'.$this->askQuestion("Main database name ({$this->mainDbnameDefault}): ",$this->mainDbnameDefault).'"';
 		$configDb['user'] = '"'.$this->askQuestion("Main database user (root): ","root").'"';
