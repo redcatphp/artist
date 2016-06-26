@@ -151,13 +151,17 @@ abstract class ArtistPlugin extends Command{
 			2 => ['file', 'php://stderr', 'w'],
 		];
 		$proc = proc_open( $cmd, $desc, $pipes );
-
-		do {
-			sleep(1);
-			$status = proc_get_status($proc);
-		} while ($status['running']);
 		
-		proc_close($proc);
+		if(is_resource($proc)){
+			do {
+				sleep(1);
+				$status = proc_get_status($proc);
+			} while ($status['running']);
+			proc_close($proc);
+		}
+		else{
+			passthru($cmd);
+		}
 	}
 	
 	static function cleanDotInUrl($url){
