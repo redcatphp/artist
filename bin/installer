@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+if(ob_get_length()) ob_get_clean();
 $downlad = function($url){
 	$fp = fopen($url,'r');
 	if(!$fp){

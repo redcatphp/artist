@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php
 if(!isset($argv[1])) return;
+if(ob_get_length()) ob_get_clean();
 $url = $argv[1];
 $version = isset($argv[2])?$argv[2]:'master';
 

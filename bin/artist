@@ -9,11 +9,12 @@ use RedCat\Framework\App;
 if(ob_get_length()) ob_get_clean();
 
 $DIR = dirname(dirname(__FILE__));
-if(is_file('redcat.php')){
-	$redcat = require 'redcat.php';
+$cwd = getcwd().'/';
+if(is_file($cwd.'redcat.php')){
+	$redcat = require $cwd.'redcat.php';
 }
 else{
-	require_once $DIR.'/vendor/autoload.php';
+	$loader = require $DIR.'/vendor/autoload.php';
 	$redcat = false;
 }
 
@@ -23,11 +24,14 @@ $commandPaths = [
 ];
 if($redcat){
 	if($redcat['artist.pluginDirsMap']){
-		foreach($redcat['artist.pluginDirsMap'] as $dir=>$namespace){
-			$redcat->autoload($dir,$namespace);
-		}
 		$commandPaths = array_merge($commandPaths,$redcat['artist.pluginDirsMap']);
 	}
+}
+foreach($commandPaths as $dir=>$namespace){
+	if($redcat)
+		$redcat->autoload($dir,$namespace);
+	else
+		$loader->add($namespace,$dir);
 }
 
 $application = new Application('Artist the RedCatPHP CLI');

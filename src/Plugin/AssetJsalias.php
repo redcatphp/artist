@@ -66,6 +66,7 @@ class AssetJsalias extends ArtistPlugin{
 		}
 		$jsonEncode = json_encode($map,JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
 		$jsonEncode = str_replace('    ',"\t",$jsonEncode);
+		if(!is_dir($d=dirname($mapFile))) @mkdir($d,0777,true);
 		file_put_contents($mapFile,$start.$jsonEncode.$end);
 		$this->output->writeln('bower packages alias registered for $js in '.$mapFile);
 	}
