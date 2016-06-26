@@ -3,6 +3,7 @@ namespace RedCat\Artist\Plugin;
 use RedCat\Artist\ArtistPlugin;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
+use RedCat\Artist\TokenTree;
 class InstallRedcatphp extends ArtistPlugin{
 	protected $description = "Install redcatphp package from vendor dir to top level of application";
 	protected $args = [];
