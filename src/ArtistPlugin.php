@@ -144,7 +144,7 @@ abstract class ArtistPlugin extends Command{
 		if($output){
 			echo "$cmd\n";
 		}
-		$cmd .= ' 2>&1';
+		//$cmd .= ' 2>&1';
 		//$desc = [
 			//0 => ['file', 'php://stdin', 'r'],
 			//1 => ['file', 'php://stdout', 'w'],
@@ -157,31 +157,42 @@ abstract class ArtistPlugin extends Command{
 			//$status = proc_get_status($proc);
 		//} while ($status['running']);
 		
-		$pdes = array(
-		  0 => array('pipe', 'r'), //child's stdin
-		  1 => array('pipe', 'w'), //child's stdout
-		);
-		$process = proc_open($cmd, $pdes, $pipes);
-		sleep(1);
-		if(is_resource($process)){
-		  while($iter-->0){
-			$r=array($pipes[1]);
-			$w=array($pipes[0]);
-			$e=array();
-			if(0<($streams=stream_select($r,$w,$e,2))){
-			  if($streams){
-				if($r){
-				  echo "reading\n";
-				  $rbuf.=fread($pipes[1],$rlen);  //reading rlen bytes from pipe
-				}else{
-				  echo "writing\n";
-				  fwrite($pipes[0],$wbuf."\n");  //writing to pipe
-				  fflush($pipes[0]);
-		  }}}}
-		  fclose($pipes[0]);
-		  fclose($pipes[1]);
-		  echo "exitcode: ".proc_close($process)."\n";
+		$pipes = array(null, null, null);
+		$process = null;
+		$output = '';
+		$ret = -1;
+		$process = proc_open($cmd,array(
+			0 => STDIN, // pipe from which child will read
+			1 => STDOUT,
+			2 => array('pipe', 'w'), // pipe to which child will write any errors
+			3 => array('pipe', 'w') // pipe to which child will write any output
+		),$pipes);
+		
+
+		$output = '';
+		while($_ = fgets($pipes[3])) {
+			$output .= $_;
 		}
+		$errors = '';
+		while ($_ = fgets($pipes[2])) {
+			fwrite(STDERR, $_);
+			$errors++;
+		}
+		if ($errors) {
+			fwrite(STDERR, "errors, giving up!\n");
+			exit(1);
+		}
+
+		fclose($pipes[2]);
+		fclose($pipes[3]);
+
+		do {
+			usleep(2000);
+			$status = proc_get_status($process);
+		} while ($status['running']);
+		proc_close($process);
+		$ret = $status['exitcode'];
+		var_dump($ret);
 	}
 	
 	static function cleanDotInUrl($url){

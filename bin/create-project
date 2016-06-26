@@ -64,29 +64,15 @@ switch(pathinfo($url,PATHINFO_EXTENSION)){
 
 echo "Installing\n";
 
-//$php = $tmpCwd.'artist.phar';
-//array_shift($argv);
-//array_shift($argv);
-//array_shift($argv);
-//array_unshift($argv,'composer:install');
-//array_unshift($argv,$php);
-//$_SERVER['argv'] = $GLOBALS['argv'] = array_values($argv);
-//ob_start();
-//include $php;
-
-$command = 'php '.$tmpCwd.'artist.phar composer:install';
-echo "$command\n";
-$command .= ' 2>&1';
-$desc = [
-	0 => ['file', 'php://stdin', 'r'],
-	1 => ['file', 'php://stdout', 'w'],
-	2 => ['file', 'php://stderr', 'w'],
-];
-$proc = proc_open( $command, $desc, $pipes );
-do{
-	sleep(1);
-	$status = proc_get_status($proc);
-} while ($status['running']);
+$php = $tmpCwd.'artist.phar';
+array_shift($argv);
+array_shift($argv);
+array_shift($argv);
+array_unshift($argv,'composer:install');
+array_unshift($argv,$php);
+$_SERVER['argv'] = $GLOBALS['argv'] = array_values($argv);
+ob_start();
+include $php;
 
 echo "Cleaning\n";
 $filesToClean = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($tmpCwd, RecursiveDirectoryIterator::SKIP_DOTS),RecursiveIteratorIterator::CHILD_FIRST);
