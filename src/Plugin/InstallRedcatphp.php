@@ -21,12 +21,14 @@ class InstallRedcatphp extends ArtistPlugin{
 		if(!file_exists($this->cwd.'artist')){
 			symlink('packages/bin/artist','artist');
 		}
-		if(!is_dir($this->cwd.'packages/redcatphp/redcatphp')) return;
-		if($this->recursiveCopy($this->cwd.'packages/redcatphp/redcatphp',$this->cwd)){
-			$this->output->writeln('redcatphp bootstrap installed');
-		}
-		else{
-			$this->output->writeln('redcatphp bootstrap failed to install');
+		
+		if(is_dir($this->cwd.'packages/redcatphp/redcatphp')){
+			if($this->recursiveCopy($this->cwd.'packages/redcatphp/redcatphp',$this->cwd)){
+				$this->output->writeln('redcatphp bootstrap installed');
+			}
+			else{
+				$this->output->writeln('redcatphp bootstrap failed to install');
+			}
 		}
 		
 		$dirs = ['.tmp','.data','content'];
