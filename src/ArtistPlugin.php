@@ -146,7 +146,7 @@ abstract class ArtistPlugin extends Command{
 		}
 		$command .= ' 2>&1';
 		$desc = [
-			0 => ['file', 'php://stdin', 'r'],
+			//0 => ['file', 'php://stdin', 'r'],
 			1 => ['file', 'php://stdout', 'w'],
 			2 => ['file', 'php://stderr', 'w'],
 		];
