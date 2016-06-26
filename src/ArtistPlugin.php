@@ -155,6 +155,7 @@ abstract class ArtistPlugin extends Command{
 		do {
 			sleep(1);
 			$status = proc_get_status($proc);
+			var_dump($status);
 		} while ($status['running']);
 	}
 	
