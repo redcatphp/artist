@@ -17,7 +17,6 @@ class InstallRedcatphp extends ArtistPlugin{
 		}
 	}
 	private function recursiveCopy($source,$dest){
-		var_dump($source,$dest);
 		$r = true;
 		if(!is_dir($dest)){
 			$r = mkdir($dest, 0755);
