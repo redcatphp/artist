@@ -1,19 +1,12 @@
 <?php
 $lines = file('bin/create-project');
-$tmp = [];
-$tmp[] = array_shift($lines);
-$tmp[] = array_shift($lines);
-$i = count($_REQUEST);
-foreach(array_reverse($_REQUEST) as $k=>$v){
-	if($v){
-		$val = is_integer($k)?$v:$k.'='.$v;
-	}
-	else{
-		$val = $k;
-	}
-	array_unshift($lines,'$argv['.$i.'] = "'.str_replace('"','\"',$val).'";');
-	$i--;
+$x = explode(' ',str_replace('+',' ',$_REQUEST['q']));
+foreach($x as $i=>$v){
+	$args[] = '$argv['.($i+1).'] = "'.str_replace('"','\"',$v).'";';
 }
-array_unshift($lines,array_pop($tmp));
-array_unshift($lines,array_pop($tmp));
+array_shift($lines);
+array_shift($lines);
+foreach(array_reverse($args) as $i=>$v){
+	array_unshift($lines,$v);
+}
 echo implode("\n",$lines);

@@ -159,9 +159,6 @@ abstract class ArtistPlugin extends Command{
 			} while ($status['running']);
 			proc_close($proc);
 		}
-		else{
-			passthru($cmd);
-		}
 	}
 	
 	static function cleanDotInUrl($url){
