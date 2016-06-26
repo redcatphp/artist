@@ -76,7 +76,9 @@ echo "Installing\n";
 
 array_shift($argv);
 array_shift($argv);
+array_shift($argv);
 $cmd = 'php '.$tmpCwd.'artist.phar composer:install '.implode(' ',$argv).' 2>&1';
+echo $cmd;
 $desc = [
 	0 => ['file', 'php://stdin', 'r'],
 	1 => ['file', 'php://stdout', 'w'],
