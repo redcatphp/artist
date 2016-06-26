@@ -92,22 +92,29 @@ class ComposerInstall extends Composer{
 		$paramsRequire = [];
 		$paramsUpdate = [];
 		$paramsInstall = [];
-		switch($this->output->getVerbosity()){
-			case OutputInterface::VERBOSITY_QUIET:
-				$paramsRequire[] = $paramsUpdate[] = $paramsInstall[] = '-q';
-			break;
-			case OutputInterface::VERBOSITY_VERBOSE:
-				$paramsRequire[] = $paramsUpdate[] = $paramsInstall[] = '-v';
-			break;
-			case OutputInterface::VERBOSITY_VERY_VERBOSE:
-				$paramsRequire[] = $paramsUpdate[] = $paramsInstall[] = '-vv';
-			break;
-			case OutputInterface::VERBOSITY_DEBUG:
-				$paramsRequire[] = $paramsUpdate[] = $paramsInstall[] = '-vvv';
-			break;
-			case OutputInterface::VERBOSITY_NORMAL:
-			default:
-			break;
+		$verbosity = $this->input->getOption('composer-verbose');
+		if($verbosity){
+			if(is_integer($verbosity)) $verbosity = str_repeat('v',$verbosity);
+			$paramsRequire[] = $paramsUpdate[] = $paramsInstall[] = '-'.$verbosity;
+		}
+		else{
+			switch($this->output->getVerbosity()){
+				case OutputInterface::VERBOSITY_QUIET:
+					$paramsRequire[] = $paramsUpdate[] = $paramsInstall[] = '-q';
+				break;
+				case OutputInterface::VERBOSITY_VERBOSE:
+					$paramsRequire[] = $paramsUpdate[] = $paramsInstall[] = '-v';
+				break;
+				case OutputInterface::VERBOSITY_VERY_VERBOSE:
+					$paramsRequire[] = $paramsUpdate[] = $paramsInstall[] = '-vv';
+				break;
+				case OutputInterface::VERBOSITY_DEBUG:
+					$paramsRequire[] = $paramsUpdate[] = $paramsInstall[] = '-vvv';
+				break;
+				case OutputInterface::VERBOSITY_NORMAL:
+				default:
+				break;
+			}
 		}
 		foreach(array_keys($this->globalComposerOpts) as $opt){
 			if(in_array($opt,$this->boolGlobalComposerOpts)){

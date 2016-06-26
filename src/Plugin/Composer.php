@@ -7,6 +7,7 @@ abstract class Composer extends ArtistPlugin{
 	protected $globalComposerOpts = [
 		'working-dir'=>'If specified, use the given directory as working directory.',
 		'profile'=>'Display timing and memory usage information',
+		'composer-verbose'=>'Increase verbosity to debug',
 	];
 	protected $boolGlobalComposerOpts = [
 		'profile',
