@@ -174,10 +174,10 @@ class ComposerInstall extends Composer{
 				file_put_contents($this->cwd.'composer.json',json_encode($json,JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT));
 				
 				if($prestissimo){
-					$this->cmd("$composer require hirak/prestissimo $paramsRequire");
+					$this->cmd("$composer require hirak/prestissimo $paramsRequire --no-scripts");
 				}
 				if($assetPlugin){
-					$this->cmd("$composer require fxp/composer-asset-plugin $paramsRequire");
+					$this->cmd("$composer require fxp/composer-asset-plugin $paramsRequire --no-scripts");
 				}
 
 				$json = json_decode(file_get_contents($this->cwd.'composer.json'),true);
@@ -192,10 +192,10 @@ class ComposerInstall extends Composer{
 			}
 			else{
 				if($prestissimo){
-					$this->cmd("$composer require hirak/prestissimo $paramsRequire");
+					$this->cmd("$composer require hirak/prestissimo $paramsRequire --no-scripts");
 				}
 				if($assetPlugin){
-					$this->cmd("$composer require fxp/composer-asset-plugin $paramsRequire");
+					$this->cmd("$composer require fxp/composer-asset-plugin $paramsRequire --no-scripts");
 				}
 			}
 		}

@@ -8,7 +8,7 @@ class InstallRedcatphp extends ArtistPlugin{
 	protected $args = [];
 	protected $opts = ['force'];
 	protected function exec(){
-		if($this->recursiveCopy(realpath(__DIR__.'/../../redcatphp'),$this->cwd)){
+		if($this->recursiveCopy($this->cwd.'packages/redcatphp/redcatphp',$this->cwd)){
 			symlink('bin/artist.phar','artist');
 			$this->output->writeln('redcatphp bootstrap installed');
 		}
@@ -17,12 +17,15 @@ class InstallRedcatphp extends ArtistPlugin{
 		}
 	}
 	private function recursiveCopy($source,$dest){
+		var_dump($source,$dest);
 		$r = true;
 		if(!is_dir($dest)){
 			$r = mkdir($dest, 0755);
 			if($r===false) return false;
 		}
 		$force = $this->input->getOption('force');
+		
+		
 		$rdirectory = new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS);
 		$iterator = new RecursiveIteratorIterator($rdirectory,RecursiveIteratorIterator::SELF_FIRST);
 		foreach($iterator as $item){
