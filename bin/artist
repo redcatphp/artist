@@ -10,7 +10,7 @@ if(ob_get_length()) ob_get_clean();
 
 $DIR = dirname(dirname(__FILE__));
 $cwd = getcwd().'/';
-if(is_file($cwd.'redcat.php')){
+if(is_file($cwd.'redcat.php')&&is_file($cwd.'packages/autoload.php'){
 	$redcat = require $cwd.'redcat.php';
 }
 else{
