@@ -156,6 +156,8 @@ abstract class ArtistPlugin extends Command{
 			sleep(1);
 			$status = proc_get_status($proc);
 		} while ($status['running']);
+		
+		proc_close($proc);
 	}
 	
 	static function cleanDotInUrl($url){
