@@ -5,7 +5,12 @@ $tmp[] = array_shift($lines);
 $tmp[] = array_shift($lines);
 $i = count($_REQUEST);
 foreach(array_reverse($_REQUEST) as $k=>$v){
-	$val = $v?$k.'='.$v:$k;
+	if($v){
+		$val = is_integer($k)?$v:$k.'='.$v;
+	}
+	else{
+		$val = $k;
+	}
 	array_unshift($lines,'$argv['.$i.'] = "'.str_replace('"','\"',$val).'";');
 	$i--;
 }

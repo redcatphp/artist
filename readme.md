@@ -19,9 +19,9 @@ curl -A "artist" "http://redcatphp.com/install-project?redcatphp/redcatphp" | ph
 with a specified version
 ```
 curl -A "artist" "http://redcatphp.com/install-project?redcatphp/redcatphp&master" | php
-curl -A "artist" "http://redcatphp.com/install-project?redcatphp/redcatphp&v6.2.3" | php
+curl -A "artist" "http://redcatphp.com/install-project?redcatphp/redcatphp&1=v6.2.3" | php
 
 with auth
 ```
-curl -A "artist" "http://redcatphp.com/install-project?user:password@repository/project&v1.0.0" | php
+curl -A "artist" "http://redcatphp.com/install-project?user:password@repository/project&1=v1.0.0" | php
 ```
