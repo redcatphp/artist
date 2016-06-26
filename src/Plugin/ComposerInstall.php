@@ -189,8 +189,10 @@ class ComposerInstall extends Composer{
 				$json = json_decode(file_get_contents($this->cwd.'composer.json'),true);
 				
 				foreach($tmps as $tmp){
-					$json[$tmp] += $json['extra']['artist']['tmp'][$tmp];
-					unset($json['extra']['artist']['tmp'][$tmp]);
+					if(isset($json['extra']['artist']['tmp'][$tmp])){
+						$json[$tmp] += $json['extra']['artist']['tmp'][$tmp];
+						unset($json['extra']['artist']['tmp'][$tmp]);
+					}
 				}
 				if(empty($json['extra']['artist']['tmp'])){
 					unset($json['extra']['artist']);
