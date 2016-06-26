@@ -11,11 +11,16 @@ if(ob_get_length()) ob_get_clean();
 $DIR = dirname(dirname(__FILE__));
 $cwd = getcwd().'/';
 if(is_file($cwd.'redcat.php')&&is_file($cwd.'packages/autoload.php')){
-	$redcat = require $cwd.'redcat.php';
-}
-else{
-	$loader = require $DIR.'/vendor/autoload.php';
+	require_once $cwd.'packages/autoload.php';
+	if(class_exists(App::class){
+		define('REDCAT',__DIR__.'/');
+		define('REDCAT_CWD',getcwd().'/');
+		$redcat = App::bootstrap();
+	}
 	$redcat = false;
+}
+if(!$redcat){
+	$loader = require $DIR.'/vendor/autoload.php';
 }
 
 $pluginPath = dirname(__FILE__).'/'.(Phar::running()?'../..':'').'/../src/Plugin';
