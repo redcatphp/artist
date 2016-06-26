@@ -170,7 +170,7 @@ class ComposerInstall extends Composer{
 					if(isset($json['extra']['artist']['tmp'][$tmp])){
 						$json['extra']['artist']['tmp'][$tmp] = $json['require']+$json['extra']['artist']['tmp'][$tmp];
 					}
-					elseif(isset($json[$tmp]){
+					elseif(isset($json[$tmp])){
 						$json['extra']['artist']['tmp'][$tmp] = $json[$tmp];
 					}
 					$json[$tmp] = (object)[];
