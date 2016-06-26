@@ -30,8 +30,8 @@ abstract class ArtistPlugin extends Command{
 	protected function execute(InputInterface $input, OutputInterface $output){
 		$this->input = $input;
 		$this->output = $output;
-		if(isset($GLOBALS['application'])&&$GLOBALS['application'] instanceof ComposerConsoleApplication){
-			$this->ioHelper = $GLOBALS['application']->getIO();
+		if(isset($GLOBALS['ioDialogRedCat'])){
+			$this->ioHelper = $GLOBALS['ioDialogRedCat'];
 		}
 		$this->exec();
 	}
