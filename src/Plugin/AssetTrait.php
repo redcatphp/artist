@@ -4,8 +4,9 @@ trait AssetTrait{
 	protected $bowerAssetDir = 'vendor/bower-asset';
 	protected $npmAssetDir = 'vendor/npm-asset';
 	function loadAssetInstallerPaths(){
-		if(is_file($this->cwd.'composer.json')){
-			$json = json_decode(file_get_contents($this->cwd.'composer.json'),true);
+		$cwd = property_exists($this,'cwd')?$this->cwd:getcwd();
+		if(is_file($cwd.'composer.json')){
+			$json = json_decode(file_get_contents($cwd.'composer.json'),true);
 			if(is_array($json)){
 				if(isset($json['config']['vendor-dir'])){
 					$this->bowerAssetDir = $json['config']['vendor-dir'].'/bower-asset';
