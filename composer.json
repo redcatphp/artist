@@ -17,8 +17,7 @@
         }
     ],
     "bin": [
-        "artist.phar",
-        "artist.phar.pubkey"
+        "bin/artist"
     ],
     "autoload": {
         "psr-4": {
