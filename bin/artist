@@ -12,7 +12,7 @@ $DIR = dirname(dirname(__FILE__));
 $cwd = getcwd().'/';
 if(is_file($cwd.'redcat.php')&&is_file($cwd.'packages/autoload.php')){
 	require_once $cwd.'packages/autoload.php';
-	if(class_exists(App::class){
+	if(class_exists(App::class)){
 		define('REDCAT',__DIR__.'/');
 		define('REDCAT_CWD',getcwd().'/');
 		$redcat = App::bootstrap();
