@@ -31,7 +31,7 @@ abstract class ArtistPlugin extends Command{
 		$this->input = $input;
 		$this->output = $output;
 		if(isset($GLOBALS['application'])&&$GLOBALS['application'] instanceof ComposerConsoleApplication){
-			$this->ioHelper = $GLOBALS['application'];
+			$this->ioHelper = $GLOBALS['application']->getIO();
 		}
 		$this->exec();
 	}
