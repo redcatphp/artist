@@ -4,7 +4,8 @@
     "type": "cli",
     "require": {
         "symfony/console": "3.1",
-        "padraic/phar-updater": "^1.0"
+        "padraic/phar-updater": "^1.0",
+        "grom358/pharborist": "dev-master"
     },
     "suggest": {
         "kherge/box": "^2.7"

@@ -1,7 +1,7 @@
 <?php
 namespace RedCat\Artist\Plugin;
 use RedCat\Artist\ArtistPlugin;
-use RedCat\Framework\PHPConfig\TokenTree;
+use RedCat\Artist\TokenTree;
 class Config extends ArtistPlugin{
 	protected $description = "Update .config.php file at root of application";
 
