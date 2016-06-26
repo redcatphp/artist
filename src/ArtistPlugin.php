@@ -142,7 +142,7 @@ abstract class ArtistPlugin extends Command{
 	}
 	protected function cmd($cmd,$output=true){
 		if($output){
-			echo "$cmd\n";
+			$this->output->writeln($cmd);
 		}
 		$cmd .= ' 2>&1';
 		$desc = [

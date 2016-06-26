@@ -75,13 +75,13 @@ class ComposerInstall extends Composer{
 		$vendorDir = $this->getVendorDir();
 		if(is_dir($vendorDir)){
 			if(!is_writable($vendorDir)){
-				echo "vendor-dir '$vendorDir' is not writeable\n\n";
+				$this->output->writeln("vendor-dir '$vendorDir' is not writeable");
 				return;
 			}
 		}
 		else{
 			if(!is_writable(getcwd())){
-				echo "current dir is not writeable\n\n";
+				$this->output->writeln("current dir is not writeable");
 				return;
 			}
 		}
@@ -228,21 +228,21 @@ class ComposerInstall extends Composer{
 		
 		
 		if(is_file($installFile='install.php')&&!rename($installFile,$installFile.'s')){
-			echo 'Unable to rename installation script, you should rename or remove it manually';
+			$this->output->writeln('Unable to rename installation script, you should rename or remove it manually');
 		}
 	}
 	protected function installComposer(){
 		$composerPhar = 'composer.phar';
 		$composerSetup = 'composer-setup.php';
-		echo "Downloading composer installer\n";
+		$this->output->writeln("Downloading composer installer");
 		$composerSetupContent = fopen('https://getcomposer.org/installer','r');
 		if(!$composerSetupContent){
-			echo "An error occured, unable to download composer installer\n";
+			$this->output->writeln("An error occured, unable to download composer installer");
 			return;
 		}
 		file_put_contents($composerSetup,$composerSetupContent);
 		if(!file_exists($composerSetup)){
-			echo "An error occured, unable to write composer installer, it\'s probably a rights problem\n";
+			$this->output->writeln("An error occured, unable to write composer installer, it\'s probably a rights problem");
 			return;
 		}
 		
@@ -250,11 +250,11 @@ class ComposerInstall extends Composer{
 		
 		unlink($composerSetup);
 		if(!file_exists($composerPhar)){
-			echo "An error occured, unable to install a local composer\n";
+			$this->output->writeln("An error occured, unable to install a local composer");
 			return;
 		}
 
-		echo "Local composer installed, you can use it from the root path of your application\n";
+		$this->output->writeln("Local composer installed, you can use it from the root path of your application");
 		rename($composerPhar,'composer');
 	}
 	
