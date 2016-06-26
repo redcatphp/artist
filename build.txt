@@ -1,0 +1,1 @@
+./build.sh  && cp artist.phar ../../../bin/artist.phar
