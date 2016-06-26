@@ -8,6 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Question\Question;
 use RuntimeException;
+use Composer\Console\Application as ComposerConsoleApplication;
 abstract class ArtistPlugin extends Command{
 	protected $description;
 	
@@ -29,8 +30,8 @@ abstract class ArtistPlugin extends Command{
 	protected function execute(InputInterface $input, OutputInterface $output){
 		$this->input = $input;
 		$this->output = $output;
-		if(isset($GLOBALS['ioDialogRedCat'])){
-			$this->ioHelper = $GLOBALS['ioDialogRedCat'];
+		if(isset($GLOBALS['application'])&&$GLOBALS['application'] instanceof ComposerConsoleApplication){
+			$this->ioHelper = $GLOBALS['application'];
 		}
 		$this->exec();
 	}
