@@ -145,18 +145,17 @@ abstract class ArtistPlugin extends Command{
 			echo "$command\n";
 		}
 		$command .= ' 2>&1';
-		passthru($command);
-		//$desc = [
-			//0 => ['file', 'php://stdin', 'r'],
-			//1 => ['file', 'php://stdout', 'w'],
-			//2 => ['file', 'php://stderr', 'w'],
-		//];
-		//$proc = proc_open( $command, $desc, $pipes );
-//
-		//do {
-			//sleep(1);
-			//$status = proc_get_status($proc);
-		//} while ($status['running']);
+		$desc = [
+			0 => ['file', 'php://stdin', 'r'],
+			1 => ['file', 'php://stdout', 'w'],
+			2 => ['file', 'php://stderr', 'w'],
+		];
+		$proc = proc_open( $command, $desc, $pipes );
+
+		do {
+			sleep(1);
+			$status = proc_get_status($proc);
+		} while ($status['running']);
 	}
 	
 	static function cleanDotInUrl($url){
