@@ -164,13 +164,19 @@ class ComposerInstall extends Composer{
 		
 		if($assetPlugin||$prestissimo){
 			if(isset($json['require'])){
-				if(isset($json['extra']['artist']['tmp-require'])){
-					$json['extra']['artist']['tmp-require'] = $json['require']+$json['extra']['artist']['tmp-require'];
+				
+				$tmps = ['require','scripts'];
+				foreach($tmps as $tmp){
+					if(isset($json['extra']['artist']['tmp'][$tmp])){
+						$json['extra']['artist']['tmp'][$tmp] = $json['require']+$json['extra']['artist']['tmp'][$tmp];
+					}
+					elseif(isset($json[$tmp]){
+						$json['extra']['artist']['tmp'][$tmp] = $json[$tmp];
+					}
+					$json[$tmp] = (object)[];
 				}
-				else{
-					$json['extra']['artist']['tmp-require'] = $json['require'];
-				}
-				$json['require'] = (object)[];
+				
+				
 				file_put_contents($this->cwd.'composer.json',json_encode($json,JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT));
 				
 				if($prestissimo){
@@ -181,11 +187,18 @@ class ComposerInstall extends Composer{
 				}
 
 				$json = json_decode(file_get_contents($this->cwd.'composer.json'),true);
-				$json['require'] += $json['extra']['artist']['tmp-require'];
-				unset($json['extra']['artist']['tmp-require']);
+				
+				foreach($tmps as $tmp){
+					$json[$tmp] += $json['extra']['artist']['tmp'][$tmp];
+					unset($json['extra']['artist']['tmp'][$tmp]);
+				}
+				if(empty($json['extra']['artist']['tmp'])){
+					unset($json['extra']['artist']);
+				}
 				if(empty($json['extra']['artist'])){
 					unset($json['extra']['artist']);
 				}
+				
 				file_put_contents($this->cwd.'composer.json',json_encode($json,JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT));
 				
 				$this->cmd("$composer update $paramsUpdate");
