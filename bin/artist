@@ -24,7 +24,7 @@ $commandPaths = [
 if($redcat){
 	if($redcat['artist.pluginDirsMap']){
 		foreach($redcat['artist.pluginDirsMap'] as $dir=>$namespace){
-			$loader->autoload($namespace,$dir);
+			$redcat->autoload($dir,$namespace);
 		}
 		$commandPaths = array_merge($commandPaths,$redcat['artist.pluginDirsMap']);
 	}
