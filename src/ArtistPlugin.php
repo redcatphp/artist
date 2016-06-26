@@ -145,53 +145,17 @@ abstract class ArtistPlugin extends Command{
 			echo "$cmd\n";
 		}
 		//$cmd .= ' 2>&1';
-		//$desc = [
-			//0 => ['file', 'php://stdin', 'r'],
-			//1 => ['file', 'php://stdout', 'w'],
-			//2 => ['file', 'php://stderr', 'w'],
-		//];
-		//$proc = proc_open( $cmd, $desc, $pipes );
-//
-		//do {
-			//sleep(1);
-			//$status = proc_get_status($proc);
-		//} while ($status['running']);
-		
-		$pipes = array(null, null, null);
-		$process = null;
-		$output = '';
-		$ret = -1;
-		$process = proc_open($cmd,array(
+		$desc = [
 			0 => ['file', 'php://stdin', 'r'],
 			1 => ['file', 'php://stdout', 'w'],
-			2 => array('pipe', 'w'), // pipe to which child will write any errors
-			3 => array('pipe', 'w') // pipe to which child will write any output
-		),$pipes);
-		
-
-		while($_ = fgets($pipes[3])) {
-			echo $_;
-		}
-		$errors = '';
-		while ($_ = fgets($pipes[2])) {
-			fwrite(STDERR, $_);
-			$errors++;
-		}
-		if ($errors) {
-			fwrite(STDERR, "errors, giving up!\n");
-			exit(1);
-		}
-
-		fclose($pipes[2]);
-		fclose($pipes[3]);
+			2 => ['file', 'php://stderr', 'w'],
+		];
+		$proc = proc_open( $cmd, $desc, $pipes );
 
 		do {
-			usleep(2000);
-			$status = proc_get_status($process);
+			sleep(1);
+			$status = proc_get_status($proc);
 		} while ($status['running']);
-		proc_close($process);
-		$ret = $status['exitcode'];
-		var_dump($ret);
 	}
 	
 	static function cleanDotInUrl($url){
