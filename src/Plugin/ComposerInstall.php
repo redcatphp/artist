@@ -42,6 +42,7 @@ class ComposerInstall extends Composer{
 		'composer-asset-plugin'=>'Pre-install the fxp/composer-asset-plugin',
 		'no-prestissimo'=>'Dont\'t install the hirak/prestissimo plugin',
 		'progress'=>'Show the progress display',
+		'composer-verbose'=>'Increase verbosity to debug',
 	];
 	protected $boolOpts = [
 		'composer-asset-plugin',
