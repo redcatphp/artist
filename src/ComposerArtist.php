@@ -7,6 +7,7 @@ class ComposerArtist{
 		$php = 'packages/bin/artist';
 		$func = self::snakeCase($func);
 		$_SERVER['argv'] = $GLOBALS['argv'] = [$php,$func];
+		$GLOBALS['autoExitArtistRedcat'] = false;
 		ob_start();
 		include $php;
 	}

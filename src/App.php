@@ -28,7 +28,13 @@ class App{
 		$this->loadRedcat();
 		$this->cwd = getcwd().'/';
 		$this->application = new Application('Artist the RedCatPHP CLI');
+		if(isset($GLOBALS['autoExitArtistRedcat'])){
+			$this->application->setAutoExit($GLOBALS['autoExitArtistRedcat']);
+		}
 		$this->commandPaths[dirname(__FILE__).'/'.(Phar::running()?'../..':'').'/../src/Plugin'] =	'RedCat\Artist\Plugin';
+	}
+	function getApplication(){
+		return $this->application;
 	}
 	function loadRedcat(){
 		if(!$this->redcat){
