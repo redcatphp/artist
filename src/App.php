@@ -1,7 +1,6 @@
 <?php
 namespace RedCat\Artist;
 use Symfony\Component\Console\Application;
-use RedCat\Framework\App;
 use FilesystemIterator;
 use ReflectionClass;
 use Phar;
