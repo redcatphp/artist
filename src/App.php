@@ -31,7 +31,7 @@ class App{
 		if(isset($GLOBALS['autoExitArtistRedcat'])){
 			$this->application->setAutoExit($GLOBALS['autoExitArtistRedcat']);
 		}
-		$this->commandPaths[dirname(__FILE__).'/'.(Phar::running()?'../..':'').'/../Plugin'] =	'RedCat\Artist\Plugin';
+		$this->commandPaths[dirname(dirname(__FILE__)).'/Plugin'] =	'RedCat\\Artist\\Plugin';
 	}
 	function getApplication(){
 		return $this->application;
@@ -59,7 +59,9 @@ class App{
 			$reg = [$dir,$ns];
 			if(in_array($reg,$this->registeredCommands)) continue;
 			$this->registeredCommands[] = $reg;
-			$this->loader->add($ns,$dir);
+			$this->loader->addPsr4($ns.'\\',$dir);
+		}
+		foreach($this->commandPaths as $dir=>$ns){
 			$fileSystemIterator = new FilesystemIterator($dir);
 			foreach($fileSystemIterator as $fileInfo){
 				if($fileInfo->getExtension()!='php') continue;
