@@ -6,7 +6,7 @@ class ComposerInstall extends Composer{
 	
 	protected $description = "Enhanced installer for composer project";
 	protected $args = [
-		
+		'git'=>'a git repository url'
 	];
 	protected $composerOpts = [	
 		'prefer-source'=> 'There are two ways of downloading a package: source and dist. For stable versions Composer will use the dist by default. The source is a version control repository. If --prefer-source is enabled, Composer will install from source if there is one. This is useful if you want to make a bugfix to a project and get a local git clone of the dependency directly.',
@@ -55,6 +55,12 @@ class ComposerInstall extends Composer{
 	function exec(){
 		ignore_user_abort(false);
 		set_time_limit(0);
+		
+		$git = $this->input->getArgument('git');
+		if($git){
+			$this->cmd("git clone $git .");
+		}
+		
 		$this->tmpDir = getcwd().'/.tmp/artist/';
 		if(!is_dir($this->tmpDir)&&!@mkdir($this->tmpDir)){
 			$this->tmpDir = sys_get_temp_dir().'/.artist/';
