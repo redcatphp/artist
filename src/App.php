@@ -31,14 +31,15 @@ class App{
 		$this->commandPaths[dirname(__FILE__).'/'.(Phar::running()?'../..':'').'/../src/Plugin'] =	'RedCat\Artist\Plugin';
 	}
 	function loadRedcat(){
-		if($this->redcat) return;
-		global $redcat;
-		if(!$redcat&&is_file($this->cwd.'redcat.php')&&is_file($this->cwd.'packages/autoload.php')){
-			require_once $this->cwd.'redcat.php';
-		}
-		$this->redcat = $redcat;
-		if($this->redcat['artist.pluginDirsMap']){
-			$this->commandPaths = array_merge($this->commandPaths,$this->redcat['artist.pluginDirsMap']);
+		if(!$this->redcat){
+			global $redcat;
+			if(!$redcat&&is_file($this->cwd.'redcat.php')&&is_file($this->cwd.'packages/autoload.php')){
+				require_once $this->cwd.'redcat.php';
+			}
+			$this->redcat = $redcat;
+			if($this->redcat['artist.pluginDirsMap']){
+				$this->commandPaths = array_merge($this->commandPaths,$this->redcat['artist.pluginDirsMap']);
+			}
 		}
 		return $this;
 	}
