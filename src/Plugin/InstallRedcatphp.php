@@ -60,7 +60,7 @@ class InstallRedcatphp extends ArtistPlugin{
 		
 		touch($f);
 		
-		ArtistApp:getInstance()->loadRedcat()->lookupCommands();
+		ArtistApp::getInstance()->loadRedcat()->lookupCommands();
 	}
 	protected function recursiveCopy($source,$dest){
 		$r = true;
