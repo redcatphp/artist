@@ -17,7 +17,7 @@ class App{
 		if(!isset(self::$app)){
 			self::$app = new self();
 		}
-		return selfg::$app;
+		return self::$app;
 	}
 	static function run(){
 		return self::getInstance()->runApp();
