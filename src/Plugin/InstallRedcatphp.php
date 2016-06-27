@@ -1,9 +1,10 @@
 <?php
 namespace RedCat\Artist\Plugin;
-use RedCat\Artist\ArtistPlugin;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
+use RedCat\Artist\ArtistPlugin;
 use RedCat\Artist\TokenTree;
+use RedCat\Artist\App as ArtistApp;
 class InstallRedcatphp extends ArtistPlugin{
 	protected $description = "Install redcatphp package from vendor dir to top level of application";
 	protected $args = [];
@@ -58,6 +59,8 @@ class InstallRedcatphp extends ArtistPlugin{
 		$this->runGitConfig();
 		
 		touch($f);
+		
+		ArtistApp:getInstance()->loadRedcat()->lookupCommands();
 	}
 	protected function recursiveCopy($source,$dest){
 		$r = true;

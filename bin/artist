@@ -1,69 +1,10 @@
 #!/usr/bin/env php
 <?php
-
-/* Artist - the RedCatPHP CLI version @package_version@ */
-
-use Symfony\Component\Console\Application;
-use RedCat\Framework\App;
-
 if(ob_get_length()) ob_get_clean();
-
-$DIR = dirname(dirname(__FILE__));
-$cwd = getcwd().'/';
-$redcat = false;
-
-if(is_file($cwd.'redcat.php')&&is_file($cwd.'packages/autoload.php')){
-	require_once $cwd.'packages/autoload.php';
-	if(class_exists(App::class)){
-		define('REDCAT',__DIR__.'/');
-		define('REDCAT_CWD',getcwd().'/');
-		$redcat = App::bootstrap();
-	}
+if(Phar::running()){
+	$loader = require dirname(dirname(__FILE__)).'/vendor/autoload.php';
 }
-if(!$redcat){
-	if(Phar::running()){
-		$loader = require $DIR.'/vendor/autoload.php';
-	}
-	else{
-		$loader = require dirname(dirname(dirname(dirname(__FILE__)))).'/autoload.php';
-	}
+else{
+	$loader = require dirname(dirname(dirname(dirname(__FILE__)))).'/autoload.php';
 }
-
-$pluginPath = dirname(__FILE__).'/'.(Phar::running()?'../..':'').'/../src/Plugin';
-$commandPaths = [
-	$pluginPath=>'RedCat\Artist\Plugin',
-];
-if($redcat){
-	if($redcat['artist.pluginDirsMap']){
-		$commandPaths = array_merge($commandPaths,$redcat['artist.pluginDirsMap']);
-	}
-}
-foreach($commandPaths as $dir=>$namespace){
-	if($redcat)
-		$redcat->autoload($dir,$namespace);
-	else
-		$loader->add($namespace,$dir);
-}
-
-$application = new Application('Artist the RedCatPHP CLI');
-
-foreach($commandPaths as $dir=>$ns){
-	$fileSystemIterator = new FilesystemIterator($dir);
-	foreach($fileSystemIterator as $fileInfo){
-		if($fileInfo->getExtension()!='php') continue;
-		$class = $ns.'\\'.pathinfo($fileInfo->getFilename(),PATHINFO_FILENAME);
-		if(!class_exists($class)) continue;
-		$reflectionClass = new \ReflectionClass($class);
-		if($reflectionClass->IsInstantiable()){
-			if($redcat){
-				$o = $redcat->create($class);
-			}
-			else{
-				$o = new $class;
-			}
-			$application->add($o);
-		}
-	}
-}
-
-$application->run();
+RedCat\Artist\App::run();
