@@ -8,7 +8,6 @@ class InstallRedcatphp extends ArtistPlugin{
 	protected $description = "Install redcatphp package from vendor dir to top level of application";
 	protected $args = [];
 	protected $opts = ['force'];
-	protected $mainDbnameDefault = "redcat-db";
 	protected $gitEmailDefault = "";
 	protected $gitNameDefault = "";
 	protected function exec(){
@@ -164,7 +163,10 @@ class InstallRedcatphp extends ArtistPlugin{
 		$config = new TokenTree($path);
 		$configDb = &$config['$']['db'];
 		$configDb['host'] = '"'.$this->askQuestion("Main database host (localhost): ","localhost").'"';
-		$configDb['name'] = '"'.$this->askQuestion("Main database name ({$this->mainDbnameDefault}): ",$this->mainDbnameDefault).'"';
+		$name = $configDb['name'];
+		$name = trim($name,'"');
+		$name = trim($name,"'");
+		$configDb['name'] = '"'.$this->askQuestion("Main database name ({$name}): ",$name).'"';
 		$configDb['user'] = '"'.$this->askQuestion("Main database user (root): ","root").'"';
 		$configDb['password'] = '"'.$this->askQuestion("Main database password (root): ","root").'"';
 		file_put_contents($path,(string)$config);
