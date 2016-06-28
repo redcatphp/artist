@@ -49,7 +49,7 @@ class InstallRedcatphp extends ArtistPlugin{
 			chmod($dir,0777);
 		});
 		if(!is_file($this->cwd.'config/env.php')){
-			if(	copy($this->cwd.'config/config.env.phps',$this->cwd.'config/env.php') ){
+			if(	copy($this->cwd.'config/env.phps',$this->cwd.'config/env.php') ){
 				$this->output->writeln('config/env.php created');
 			}
 			else{
