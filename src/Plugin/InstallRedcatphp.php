@@ -19,7 +19,7 @@ class InstallRedcatphp extends ArtistPlugin{
 		
 		$this->runCmd('asset:jsalias');
 		if(is_file($f=$this->cwd.'packages/.redcat-installed')){
-			//return;
+			return;
 		}
 		
 		
