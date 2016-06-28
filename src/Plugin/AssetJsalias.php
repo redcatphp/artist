@@ -10,10 +10,10 @@ class AssetJsalias extends ArtistPlugin{
 	protected $opts = ['force'];
 	
 	protected $exclude = ['js'];
+	protected $bowerAliasPrefix = '';
+	protected $npmAliasPrefix = 'npm.';
 	protected function exec(){
 		$this->loadAssetInstallerPaths();
-		$force = $this->input->getOption('force');
-		$source = $this->cwd.$this->bowerAssetDir;
 		$mapFile = $this->input->getArgument('jsconfigfile')?:$this->cwd.'js/js.config.js';
 		$start = '$js.config(';
 		$end = ');';
@@ -33,10 +33,23 @@ class AssetJsalias extends ArtistPlugin{
 		}
 		if(!isset($map['alias'])) $map['alias'] = [];
 		$alias = &$map['alias'];
+		$this->registerAsset($alias,$this->bowerAssetDir,$this->bowerAliasPrefix);
+		$this->registerAsset($alias,$this->npmAssetDir,$this->npmAliasPrefix);
+		$jsonEncode = json_encode($map,JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+		$jsonEncode = str_replace('    ',"\t",$jsonEncode);
+		if(!is_dir($d=dirname($mapFile))) @mkdir($d,0777,true);
+		file_put_contents($mapFile,$start.$jsonEncode.$end);
+		$this->output->writeln('bower-asset and npm-asset packages alias registered for $js in '.$mapFile);
+	}
+	function registerAsset(&$alias,$assetDir,$aliasPrefix=''){
+		$source = $this->cwd.$assetDir;
+		if(!is_dir($source)) return;
+		$force = $this->input->getOption('force');
 		foreach(glob($source.'/*',GLOB_ONLYDIR) as $p){
 			$packageName = basename($p);
+			$packageNameAlias = $aliasPrefix.$packageName;
 			if(in_array($packageName,$this->exclude)) continue;
-			if(isset($alias[$packageName])&&!$force) continue;
+			if(isset($alias[$packageNameAlias])&&!$force) continue;
 			if(is_file($jsonFile=$p.'/bower.json')||is_file($jsonFile=$p.'/component.json')){
 				$json = json_decode(file_get_contents($jsonFile),true);
 				if(!isset($json['main'])) continue;
@@ -53,23 +66,19 @@ class AssetJsalias extends ArtistPlugin{
 			$mainJs = [];
 			foreach((array)$mainJson as $main){
 				if(strtolower(pathinfo($main,PATHINFO_EXTENSION))=='js'){
-					$mainJs[] = self::cleanDotInUrl($this->bowerAssetDir.'/'.$packageName.'/'.substr($main,0,-3));
+					$mainJs[] = self::cleanDotInUrl($assetDir.'/'.$packageName.'/'.substr($main,0,-3));
 				}
 			}
 			if(empty($mainJs)) continue;
 			if(count($mainJs)===1){
-				$alias[$packageName] = $mainJs[0];
+				$alias[$packageNameAlias] = $mainJs[0];
 			}
 			else{
-				$alias[$packageName] = $mainJs;
+				$alias[$packageNameAlias] = $mainJs;
 			}
 		}
-		$jsonEncode = json_encode($map,JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
-		$jsonEncode = str_replace('    ',"\t",$jsonEncode);
-		if(!is_dir($d=dirname($mapFile))) @mkdir($d,0777,true);
-		file_put_contents($mapFile,$start.$jsonEncode.$end);
-		$this->output->writeln('bower packages alias registered for $js in '.$mapFile);
 	}
+	
 	static function removeTrailingCommas($json){
 		$json = preg_replace('/,\s*([\]}])/m', '$1', $json);
 		return $json;
