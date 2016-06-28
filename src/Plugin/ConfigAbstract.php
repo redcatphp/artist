@@ -12,7 +12,7 @@ abstract class ConfigAbstract extends ArtistPlugin{
 		'push'=>'append a value in array',
 		'unshift'=>'prepend a value in array',
 	];
-	protected abstract $configFilePath;
+	protected $configFilePath = "config/app.php";
 	
 	protected function exec(){
 		$key = $this->input->getArgument('key');

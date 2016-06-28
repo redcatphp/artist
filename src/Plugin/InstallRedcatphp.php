@@ -11,12 +11,15 @@ class InstallRedcatphp extends ArtistPlugin{
 	protected $opts = ['force'];
 	protected $gitEmailDefault = "";
 	protected $gitNameDefault = "";
+	protected $overwrite = [
+		'redcat.php',
+		'config/default.php'
+	];
 	protected function exec(){
 		
 		$this->runCmd('asset:jsalias');
-		
 		if(is_file($f=$this->cwd.'packages/.redcat-installed')){
-			return;
+			//return;
 		}
 		
 		
@@ -45,12 +48,12 @@ class InstallRedcatphp extends ArtistPlugin{
 			}
 			chmod($dir,0777);
 		});
-		if(!is_file($this->cwd.'.config.env.php')){
-			if(	copy($this->cwd.'.config.env.phps',$this->cwd.'.config.env.php') ){
-				$this->output->writeln('.config.env.php created');
+		if(!is_file($this->cwd.'config/env.php')){
+			if(	copy($this->cwd.'config/config.env.phps',$this->cwd.'config/env.php') ){
+				$this->output->writeln('config/env.php created');
 			}
 			else{
-				$this->output->writeln('.config.env.php creation failed');
+				$this->output->writeln('config/env.php creation failed');
 			}
 			$this->mergeSubPackagesConfig();
 		}
@@ -68,16 +71,16 @@ class InstallRedcatphp extends ArtistPlugin{
 			$r = mkdir($dest, 0755);
 			if($r===false) return false;
 		}
-		$force = $this->input->getOption('force');
-		
 		
 		$rdirectory = new RecursiveDirectoryIterator($source, RecursiveDirectoryIterator::SKIP_DOTS);
 		$iterator = new RecursiveIteratorIterator($rdirectory,RecursiveIteratorIterator::SELF_FIRST);
 		foreach($iterator as $item){
+			$force = $this->input->getOption('force');
 			$sub = $iterator->getSubPathName();
-			if(substr($sub,0,5)=='.git/') continue;
+			if(in_array(substr($dest.$sub,strlen($this->cwd)),$this->overwrite)) $force = true;
 			if($item->isDir()){
-				$d = $dest. $iterator->getSubPathName();
+				if(substr($sub,0,4)=='.git') continue;
+				$d = $dest.$sub;
 				if(!is_dir($d)){
 					$r = mkdir($d);
 					if($r) $this->output->writeln("directory $d created");
@@ -88,6 +91,7 @@ class InstallRedcatphp extends ArtistPlugin{
 				}
 			}
 			else{
+				if(substr($sub,0,5)=='.git/') continue;
 				$f = $dest.$sub;
 				if(!is_file($f)){
 					$r = copy($item, $f);
@@ -111,7 +115,7 @@ class InstallRedcatphp extends ArtistPlugin{
 	
 	protected function mergeSubPackagesConfig(){
 		$modified = false;
-		$path = $this->cwd.'.config.php';
+		$path = $this->cwd.'config/app.php';
 		$config = new TokenTree($path);
 		$source = $this->cwd.'packages';
 		foreach(glob($source.'/*',GLOB_ONLYDIR) as $p){
@@ -162,7 +166,7 @@ class InstallRedcatphp extends ArtistPlugin{
 	}
 	protected function setDbConfig(){
 		$modified = false;
-		$path = $this->cwd.'.config.env.php';
+		$path = $this->cwd.'config/env.php';
 		$config = new TokenTree($path);
 		$configDb = &$config['$']['db'];
 		$configDb['host'] = '"'.$this->askQuestion("Main database host (localhost): ","localhost").'"';
