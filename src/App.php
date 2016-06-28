@@ -30,7 +30,7 @@ class App{
 		if(isset($GLOBALS['autoExitArtistRedcat'])){
 			$this->application->setAutoExit($GLOBALS['autoExitArtistRedcat']);
 		}
-		$this->commandPaths[dirname(dirname(__FILE__)).'/Plugin'] =	'RedCat\\Artist\\Plugin';
+		$this->commandPaths[dirname(dirname(__FILE__)).'/src/Plugin'] =	'RedCat\\Artist\\Plugin';
 	}
 	function getApplication(){
 		return $this->application;
