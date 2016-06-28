@@ -2,9 +2,7 @@
 namespace RedCat\Artist\Plugin;
 use RedCat\Artist\ArtistPlugin;
 use RedCat\Artist\TokenTree;
-class Config extends ArtistPlugin{
-	protected $description = "Update .config.php file at root of application";
-
+abstract class ConfigAbstract extends ArtistPlugin{
 	protected $args = [
 		'key'=>"The key in '$' associative array, recursive access with dot, eg: dev.php for 'dev'=>['php'=>...]",
 		'value'=>"The value to assign",
@@ -14,6 +12,7 @@ class Config extends ArtistPlugin{
 		'push'=>'append a value in array',
 		'unshift'=>'prepend a value in array',
 	];
+	protected abstract $configFilePath;
 	
 	protected function exec(){
 		$key = $this->input->getArgument('key');
@@ -23,7 +22,7 @@ class Config extends ArtistPlugin{
 		$push = $this->input->getOption('push');
 		$unshift = $this->input->getOption('unshift');
 		
-		$path = $this->cwd.'.config.php';
+		$path = $this->cwd.$this->configFilePath;
 		$config = new TokenTree($path);
 		if(!$key){
 			$print = $config->var_codify($config['$']);

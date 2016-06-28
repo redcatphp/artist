@@ -9,7 +9,6 @@ class Clearcache extends ArtistPlugin{
 	private $exceptions = ['sessions'];
 	private $tmpPath;
 	protected function exec(){
-		$path = $this->cwd.'.config.php';
 		$this->tmpPath = $this->cwd.'.tmp';
 		$rm = $this->rmdir($this->tmpPath,true);
 		if($rm===true)
