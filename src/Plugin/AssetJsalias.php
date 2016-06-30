@@ -22,6 +22,7 @@ class AssetJsalias extends ArtistPlugin{
 			$mapFileContent = trim($mapFileContent);
 			$mapFileContent = substr($mapFileContent,strlen($start),-1*strlen($end));
 			$mapFileContent = self::removeTrailingCommas($mapFileContent);
+			$mapFileContent = self::removeJsonComments($mapFileContent);
 			$map = json_decode($mapFileContent,true);
 			if(!is_array($map)){
 				$this->output->writeln('json parse error in '.$mapFile);
@@ -79,6 +80,10 @@ class AssetJsalias extends ArtistPlugin{
 		}
 	}
 	
+	static function removeJsonComments($json){
+		$json = preg_replace('/\s*(?!<\")\/\*[^\*]+\*\/(?!\")\s*/', '', $json);
+		return $json;
+	}
 	static function removeTrailingCommas($json){
 		$json = preg_replace('/,\s*([\]}])/m', '$1', $json);
 		return $json;
