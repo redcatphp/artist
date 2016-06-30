@@ -1,6 +1,9 @@
 <?php
 namespace RedCat\Artist\Plugin;
 use RedCat\Artist\ArtistPlugin;
+use Seld\JsonLint\JsonParser;
+use Seld\JsonLint\ParsingException;
+use JShrink\Minifier;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 class AssetJsalias extends ArtistPlugin{
@@ -22,10 +25,16 @@ class AssetJsalias extends ArtistPlugin{
 			$mapFileContent = trim($mapFileContent);
 			$mapFileContent = substr($mapFileContent,strlen($start),-1*strlen($end));
 			$mapFileContent = self::removeTrailingCommas($mapFileContent);
-			$mapFileContent = self::removeJsonComments($mapFileContent);
-			$map = json_decode($mapFileContent,true);
-			if(!is_array($map)){
+			
+			$map = json_decode(Minifier::minify($mapFileContent, ['flaggedComments' => false]),true);
+			if(!$map){
 				$this->output->writeln('json parse error in '.$mapFile);
+				$parser = new JsonParser();
+				try {
+					$map = $parser->parse($mapFileContent);
+				} catch (ParsingException $e) {
+					$this->output->writeln($e->getMessage());
+				}
 				return;
 			}
 		}
@@ -80,10 +89,6 @@ class AssetJsalias extends ArtistPlugin{
 		}
 	}
 	
-	static function removeJsonComments($json){
-		$json = preg_replace('/\s*(?!<\")\/\*[^\*]+\*\/(?!\")\s*/', '', $json);
-		return $json;
-	}
 	static function removeTrailingCommas($json){
 		$json = preg_replace('/,\s*([\]}])/m', '$1', $json);
 		return $json;
