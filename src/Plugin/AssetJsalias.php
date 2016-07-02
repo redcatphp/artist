@@ -1,11 +1,14 @@
 <?php
 namespace RedCat\Artist\Plugin;
 use RedCat\Artist\ArtistPlugin;
-use Seld\JsonLint\JsonParser;
 use Seld\JsonLint\ParsingException;
-use JShrink\Minifier;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
+
+use Seld\JsonLint\JsonParser;
+use RedCat\JSON5\JSON5;
+use JShrink\Minifier;
+
 class AssetJsalias extends ArtistPlugin{
 	use AssetTrait;
 	protected $description = 'Register navigator main javascript from bower vendor directory in $js.alias config';
@@ -26,7 +29,9 @@ class AssetJsalias extends ArtistPlugin{
 			$mapFileContent = substr($mapFileContent,strlen($start),-1*strlen($end));
 			$mapFileContent = self::removeTrailingCommas($mapFileContent);
 			
-			$map = json_decode(Minifier::minify($mapFileContent, ['flaggedComments' => false]),true);
+			//$map = json_decode(Minifier::minify($mapFileContent, ['flaggedComments' => false]),true);
+			$map = JSON5::decode($mapFileContent,true,true);
+			
 			if(!$map){
 				$this->output->writeln('json parse error in '.$mapFile);
 				$parser = new JsonParser();
@@ -45,7 +50,10 @@ class AssetJsalias extends ArtistPlugin{
 		$alias = &$map['alias'];
 		$this->registerAsset($alias,$this->bowerAssetDir,$this->bowerAliasPrefix);
 		$this->registerAsset($alias,$this->npmAssetDir,$this->npmAliasPrefix);
-		$jsonEncode = json_encode($map,JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+		
+		//$jsonEncode = json_encode($map,JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT);
+		$jsonEncode = JSON5::encode($map,JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT,true);
+		
 		$jsonEncode = str_replace('    ',"\t",$jsonEncode);
 		if(!is_dir($d=dirname($mapFile))) @mkdir($d,0777,true);
 		file_put_contents($mapFile,$start.$jsonEncode.$end);
