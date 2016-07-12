@@ -164,7 +164,6 @@ class InstallRedcatphp extends ArtistPlugin{
 		passthru("git config user.name $name");
 	}
 	protected function setDbConfig(){
-		$modified = false;
 		$path = $this->cwd.'config/env.php';
 		$config = new TokenTree($path);
 		$configDb = &$config['$']['db'];
