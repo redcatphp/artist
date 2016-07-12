@@ -57,7 +57,7 @@ class DbExport extends ArtistPlugin{
 				$schema = [];
 				$fkeys = $b->getKeyMapForType($tableName);
 				foreach($fkeys as $fk){
-					$schema['fk'][$fk['from']] = [$b->unprefixTable($fk['table']),$fk['to'],$fk['on_delete']=='CASCADE'||$fk['on_delete']=='CASCADE'];
+					$schema['fk'][$fk['from']] = [$b->unprefixTable($fk['table']),$fk['to'],$fk['on_delete']=='CASCADE'];
 				}
 				$schema['uniq'] = $b->getUniqueConstraints($tableName);				
 				if(!empty($schema)){
