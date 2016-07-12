@@ -143,7 +143,6 @@ class InstallRedcatphp extends ArtistPlugin{
 	
 	protected function runGitConfig(){
 		if(!is_dir($this->cwd.'.git')) return;
-		$ini = parse_ini_file($this->cwd.'.git/config',true);
 		$defaultEmail = $this->gitEmailDefault;
 		$defaultName = $this->gitNameDefault;
 		if(strtoupper(substr(PHP_OS, 0, 3))!='WIN'){
