@@ -12,16 +12,17 @@ use JShrink\Minifier;
 class AssetJsalias extends ArtistPlugin{
 	use AssetTrait;
 	protected $description = 'Register navigator main javascript from bower vendor directory in $js.alias config';
-	protected $args = ['jsconfigfile'=>'The $js config file definition to store alias key'];
-	protected $opts = ['force'];
+	protected $args = ['jsconfigfile'=>'The $js alias or config file definition to store alias key'];
+	protected $opts = ['force','config-mode'];
 	
 	protected $exclude = ['js'];
 	protected $bowerAliasPrefix = '';
 	protected $npmAliasPrefix = 'npm.';
 	protected function exec(){
 		$this->loadAssetInstallerPaths();
-		$mapFile = $this->input->getArgument('jsconfigfile')?:$this->cwd.'js/js.config.js';
-		$start = '$js.config(';
+		$mapFile = $this->input->getArgument('jsconfigfile')?:$this->cwd.'js/js.alias-asset.js';
+		$configMode = $this->input->getOption('config-mode');
+		$start = '$js.'.($configMode?'config':'alias').'(';
 		$end = ');';
 		if(is_file($mapFile)){
 			$mapFileContent = file_get_contents($mapFile);
@@ -29,10 +30,8 @@ class AssetJsalias extends ArtistPlugin{
 			$mapFileContent = substr($mapFileContent,strlen($start),-1*strlen($end));
 			$mapFileContent = self::removeTrailingCommas($mapFileContent);
 			
-			//$map = json_decode(Minifier::minify($mapFileContent, ['flaggedComments' => false]),true);
 			$map = JSON5::decode($mapFileContent,true,true);
-			
-			if(!$map){
+			if(!is_array($map)){
 				$this->output->writeln('json parse error in '.$mapFile);
 				$parser = new JsonParser();
 				try {
@@ -46,8 +45,13 @@ class AssetJsalias extends ArtistPlugin{
 		else{
 			$map = [];
 		}
-		if(!isset($map['alias'])) $map['alias'] = [];
-		$alias = &$map['alias'];
+		if($configMode){
+			if(!isset($map['alias'])) $map['alias'] = [];
+			$alias = &$map['alias'];
+		}
+		else{
+			$alias = &$map;
+		}
 		$this->registerAsset($alias,$this->bowerAssetDir,$this->bowerAliasPrefix);
 		$this->registerAsset($alias,$this->npmAssetDir,$this->npmAliasPrefix);
 		
