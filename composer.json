@@ -7,8 +7,7 @@
         "padraic/phar-updater": "^1.0",
         "tedivm/jshrink": "^1.1",
         "seld/jsonlint": "^1.4",
-        "grom358/pharborist": "dev-master",
-        "redcatphp/json5": "dev-master"
+        "grom358/pharborist": "dev-master"
     },
     "suggest": {
         "kherge/box": "^2.7"
