@@ -105,11 +105,11 @@ class ComposerUpdate extends Composer{
 						$paramsUpdate[] = '--'.$opt;
 					}
 				break;
-				case 'prefer-dist':					
-					if($this->input->getOption($opt)||!$this->input->getOption('prefer-source')){
-						$paramsUpdate[] = '--'.$opt;
-					}
-				break;
+				//case 'prefer-dist':					
+					//if($this->input->getOption($opt)||!$this->input->getOption('prefer-source')){
+						//$paramsUpdate[] = '--'.$opt;
+					//}
+				//break;
 				default:
 					if(in_array($opt,$this->boolComposerOpts)){
 						if($this->input->getOption($opt)){

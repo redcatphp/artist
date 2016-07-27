@@ -149,11 +149,11 @@ class ComposerInstall extends Composer{
 						$paramsRequire[] = $paramsUpdate[] = $paramsInstall[] = '--'.$opt;
 					}
 				break;
-				case 'prefer-dist':					
-					if($this->input->getOption($opt)||!$this->input->getOption('prefer-source')){
-						$paramsRequire[] = $paramsUpdate[] = $paramsInstall[] = '--'.$opt;
-					}
-				break;
+				//case 'prefer-dist':					
+					//if($this->input->getOption($opt)||!$this->input->getOption('prefer-source')){
+						//$paramsRequire[] = $paramsUpdate[] = $paramsInstall[] = '--'.$opt;
+					//}
+				//break;
 				default:
 					if(in_array($opt,$this->boolComposerOpts)){
 						if($this->input->getOption($opt)){
