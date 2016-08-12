@@ -40,13 +40,13 @@ class ComposerInstall extends Composer{
 	];
 	protected $opts = [
 		'composer-asset-plugin'=>'Pre-install the fxp/composer-asset-plugin',
-		'no-prestissimo'=>'Dont\'t install the hirak/prestissimo plugin',
+		'prestissimo'=>'Dont\'t install the hirak/prestissimo plugin',
 		'progress'=>'Show the progress display',
 		'composer-verbose'=>'Increase verbosity to debug',
 	];
 	protected $boolOpts = [
 		'composer-asset-plugin',
-		'no-prestissimo',
+		'prestissimo',
 	];
 	protected $shortOpts = [
 		
@@ -94,7 +94,7 @@ class ComposerInstall extends Composer{
 		
 		$json = $this->getComposerJson();
 		$assetPlugin = $this->input->getOption('composer-asset-plugin');
-		$prestissimo = !$this->input->getOption('no-prestissimo');
+		$prestissimo = $this->input->getOption('prestissimo');
 		
 		$paramsRequire = [];
 		$paramsUpdate = [];
