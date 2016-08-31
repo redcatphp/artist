@@ -111,6 +111,7 @@ class CsvImport extends ArtistPlugin{
 				$progress->advance();
 			}
 			$progress->finish();
+			$this->output->writeln('');
 			$this->output->writeln('Rows of table '.$type.' imported');
 			fclose($fp);
 		}
