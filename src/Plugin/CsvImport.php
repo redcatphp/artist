@@ -46,12 +46,14 @@ class CsvImport extends ArtistPlugin{
 		$b = $this->bases[$db];
 		
 		
-		$remap = [];
-		foreach(glob($dir.'*.remap.ini') as $file){
-			$tb = substr(basename($file),0,-10);
-			$remap[$tb] = parse_ini_file($file);
+		$config = [];
+		foreach(glob($dir.'*.ini') as $file){
+			$type = substr(basename($file),0,-4);
+			$config[$type] = parse_ini_file($file,true);
+			if(isset($config[$type]['protect']))
+				$config[$type]['protect'] = explode(',',$config[$type]['protect']);
 		}
-
+		
 		foreach(glob($dir.'*.csv') as $rowsFile){
 			$type = substr(basename($rowsFile),0,-4);
 			$table = $b[$type];
@@ -69,13 +71,29 @@ class CsvImport extends ArtistPlugin{
 			$progress = new ProgressBar($this->output, $linecount);
 			rewind($fp);
 			
+			if(isset($config[$type]['separator'])&&$config[$type]['separator'])
+				$separator = $config[$type]['separator'];
 			while (($line = fgetcsv($fp, 0, $separator)) !== FALSE) {
 				if($i==0){
 					if(end($line)=='')
 						array_pop($line);
 					$columns = [];
 					foreach($line as $col){
-						$columns[] = isset($remap[$type][$col])?$remap[$type][$col]:$col;
+						$columns[] = isset($config[$type]['remap'][$col])?$config[$type]['remap'][$col]:$col;
+					}
+					if(isset($config[$type]['protect'])){
+						foreach($config[$type]['protect'] as $col){
+							if(false!==$i=array_search($col,$columns)){
+								$y = 2;
+								$oldcol = $columns[$i];
+								do{
+									$newcol = $oldcol.$y;
+									$y++;
+								}
+								while(in_array($newcol,$columns));
+								$columns[$i] = $newcol;
+							}
+						}
 					}
 					if($lowercase){
 						$columns = array_map('strtolower',$columns);
