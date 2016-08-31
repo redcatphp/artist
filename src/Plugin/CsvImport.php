@@ -60,7 +60,6 @@ class CsvImport extends ArtistPlugin{
 			$fp = fopen($rowsFile,'r');
 			$i = 0;
 			$this->output->writeln('importing '.$type.'');
-			
 			$linecount = 0;
 			while(!feof($fp)){
 				$line = fgets($fp, 4096);
@@ -69,6 +68,7 @@ class CsvImport extends ArtistPlugin{
 				}
 			}
 			$progress = new ProgressBar($this->output, $linecount);
+			$this->output->writeln('');
 			rewind($fp);
 			
 			if(isset($config[$type]['separator'])&&$config[$type]['separator'])
