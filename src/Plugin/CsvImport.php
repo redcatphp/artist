@@ -83,15 +83,15 @@ class CsvImport extends ArtistPlugin{
 					}
 					if(isset($config[$type]['protect'])){
 						foreach($config[$type]['protect'] as $col){
-							if(false!==$i=array_search($col,$columns)){
+							if(false!==$index=array_search($col,$columns)){
 								$y = 2;
-								$oldcol = $columns[$i];
+								$oldcol = $columns[$index];
 								do{
 									$newcol = $oldcol.$y;
 									$y++;
 								}
 								while(in_array($newcol,$columns));
-								$columns[$i] = $newcol;
+								$columns[$index] = $newcol;
 							}
 						}
 					}
