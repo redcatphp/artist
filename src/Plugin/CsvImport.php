@@ -46,6 +46,12 @@ class CsvImport extends ArtistPlugin{
 		$b = $this->bases[$db];
 		
 		
+		$remap = [];
+		foreach(glob($dir.'*.remap.ini') as $file){
+			$tb = substr(basename($file),0,-10);
+			$remap[$tb] = parse_ini_file($file);
+		}
+
 		foreach(glob($dir.'*.csv') as $rowsFile){
 			$type = substr(basename($rowsFile),0,-4);
 			$table = $b[$type];
@@ -67,10 +73,13 @@ class CsvImport extends ArtistPlugin{
 				if($i==0){
 					if(end($line)=='')
 						array_pop($line);
-					if($lowercase){
-						$line = array_map('strtolower',$line);
+					$columns = [];
+					foreach($line as $col){
+						$columns[] = isset($remap[$type][$col])?$remap[$type][$col]:$col;
 					}
-					$columns = $line;
+					if($lowercase){
+						$columns = array_map('strtolower',$columns);
+					}
 				}
 				else{
 					$row = [];
