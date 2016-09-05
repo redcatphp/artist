@@ -102,7 +102,7 @@ class CsvImport extends ArtistPlugin{
 				else{
 					$row = [];
 					foreach($columns as $i=>$field){
-						$row[$field] = isset($line[$i])?$line[$i]:null;
+						$row[$field] = isset($line[$i])&&$line[$i]!=''?$line[$i]:null;
 					}
 					$row['_forcePK'] = true;
 					$table[] = $row;
