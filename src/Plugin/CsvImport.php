@@ -4,6 +4,7 @@ use RedCat\Artist\ArtistPlugin;
 use RedCat\DataMap\Bases;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Helper\ProgressBar;
+use ForceUTF8\Encoding;
 class CsvImport extends ArtistPlugin{
 	protected $description = "Import from csv lines format to a database";
 
@@ -12,6 +13,7 @@ class CsvImport extends ArtistPlugin{
 		'dir'=>'The storage directory',
 		'separator'=>'The splitter character, default: ;',
 		'lowercase'=>'Normalize columns to lowercase, default: true',
+		'forceutf8'=>'Force UTF8 encoding, default: true',
 	];
 	protected $opts = [
 	];
@@ -19,6 +21,7 @@ class CsvImport extends ArtistPlugin{
 	protected $defaultDir = '.data/csv/';
 	protected $defaultSeparator = ';';
 	protected $defaultLowercase = true;
+	protected $defaultForceutf8 = true;
 	protected $bases;
 	function __construct($name = null,Bases $bases=null){
 		parent::__construct($name);
@@ -42,6 +45,10 @@ class CsvImport extends ArtistPlugin{
 		$lowercase = $this->input->getArgument('lowercase');
 		if(!$lowercase)
 			$lowercase = $this->defaultLowercase;
+		
+		$forceutf8 = $this->input->getArgument('forceutf8');
+		if(!$forceutf8)
+			$forceutf8 = $this->defaultForceutf8;
 		
 		$b = $this->bases[$db];
 		
@@ -74,6 +81,9 @@ class CsvImport extends ArtistPlugin{
 			if(isset($config[$type]['separator'])&&$config[$type]['separator'])
 				$separator = $config[$type]['separator'];
 			while (($line = fgetcsv($fp, 0, $separator)) !== FALSE) {
+				if($forceutf8){
+					$line = array_map([Encoding::class,'toUTF8'],$line);
+				}
 				if($i==0){
 					if(end($line)=='')
 						array_pop($line);
@@ -94,7 +104,8 @@ class CsvImport extends ArtistPlugin{
 								$columns[$index] = $newcol;
 							}
 						}
-					}
+					}					
+					$columns = array_map('self::normalizeColumn',$columns);
 					if($lowercase){
 						$columns = array_map('strtolower',$columns);
 					}
@@ -116,5 +127,8 @@ class CsvImport extends ArtistPlugin{
 			fclose($fp);
 		}
 		$this->output->writeln('CSV directory '.$dir.' imported into  DB '.$db);
+	}
+	static function normalizeColumn($string){
+		return strtolower(trim(preg_replace('~[^0-9a-z]+~i', '_', html_entity_decode(preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i', '$1', htmlentities($string, ENT_QUOTES, 'UTF-8')), ENT_QUOTES, 'UTF-8')), '_'));
 	}
 }
