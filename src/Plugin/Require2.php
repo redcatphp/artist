@@ -90,7 +90,7 @@ class Require2 extends ArtistPlugin{
 				
 			chdir($this->cwd);
 			
-			$this->rmdirSkippingSymlink($maindir);
+			//$this->rmdirSkippingSymlink($maindir);
 		}
 		
 	}
