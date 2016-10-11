@@ -68,7 +68,7 @@ class App{
 				$class = $ns.'\\'.pathinfo($fileInfo->getFilename(),PATHINFO_FILENAME);
 				if(!class_exists($class)) continue;
 				$reflectionClass = new ReflectionClass($class);
-				if(($reflectionClass->isInstance(Command::class)||$reflectionClass->isSubclassOf(Command::class))&&$reflectionClass->isInstantiable()){
+				if(($class==Command::class||$reflectionClass->isSubclassOf(Command::class))&&$reflectionClass->isInstantiable()){
 					if($this->redcat){
 						$o = $this->redcat->create($class);
 					}
