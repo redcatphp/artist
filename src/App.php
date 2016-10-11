@@ -1,6 +1,7 @@
 <?php
 namespace RedCat\Artist;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use FilesystemIterator;
 use ReflectionClass;
 use Phar;
@@ -67,7 +68,7 @@ class App{
 				$class = $ns.'\\'.pathinfo($fileInfo->getFilename(),PATHINFO_FILENAME);
 				if(!class_exists($class)) continue;
 				$reflectionClass = new ReflectionClass($class);
-				if($reflectionClass->IsInstantiable()){
+				if(($reflectionClass->isInstance(Command::class)||$reflectionClass->isSubclassOf(Command::class))&&$reflectionClass->isInstantiable()){
 					if($this->redcat){
 						$o = $this->redcat->create($class);
 					}
