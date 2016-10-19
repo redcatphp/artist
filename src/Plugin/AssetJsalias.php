@@ -37,7 +37,7 @@ class AssetJsalias extends ArtistPlugin{
 			$packageName = basename($p);
 			$packageNameAlias = $aliasPrefix.$packageName;
 			if(in_array($packageName,$this->exclude)) continue;
-			if(is_file($jsonFile=$p.'/bower.json')||is_file($jsonFile=$p.'/component.json')){
+			if(is_file($jsonFile=$p.'/bower.json')||is_file($jsonFile=$p.'/package.json')||is_file($jsonFile=$p.'/component.json')){
 				$json = json_decode(file_get_contents($jsonFile),true);
 				if(!isset($json['main'])) continue;
 				$mainJson = $json['main'];
