@@ -91,7 +91,7 @@ class InstallRedcatphp extends ArtistPlugin{
 				}
 			}
 			else{
-				if(substr($sub,0,5)=='.git/') continue;
+				if(substr($sub,0,5)=='.git'.DIRECTORY_SEPARATOR) continue;
 				$f = $dest.$sub;
 				if(!is_file($f)){
 					$r = copy($item, $f);
@@ -118,8 +118,8 @@ class InstallRedcatphp extends ArtistPlugin{
 		$path = $this->cwd.'config/app.php';
 		$config = new TokenTree($path);
 		$source = $this->cwd.'packages';
-		foreach(glob($source.'/*',GLOB_ONLYDIR) as $p){
-			if(is_file($f=$p.'/redcat.config.php')){
+		foreach(glob($source.DIRECTORY_SEPARATOR.'*',GLOB_ONLYDIR) as $p){
+			if(is_file($f=$p.DIRECTORY_SEPARATOR.'redcat.config.php')){
 				self::merge_recursive($config,new TokenTree($f));
 				$modified = true;
 			}
