@@ -1,8 +1,8 @@
 <?php
 namespace RedCat\Artist\Plugin;
 use RedCat\Artist\ArtistPlugin;
-use RedCat\DataMap\Bases;
-use RedCat\DataMap\DataSource\SQL;
+use FoxORM\Bases;
+use FoxORM\DataSource\SQL;
 class DbExport extends ArtistPlugin{
 	protected $description = "Export a database to json lines format";
 

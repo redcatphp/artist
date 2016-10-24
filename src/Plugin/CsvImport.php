@@ -1,7 +1,7 @@
 <?php
 namespace RedCat\Artist\Plugin;
 use RedCat\Artist\ArtistPlugin;
-use RedCat\DataMap\Bases;
+use FoxORM\Bases;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Helper\ProgressBar;
 use ForceUTF8\Encoding;

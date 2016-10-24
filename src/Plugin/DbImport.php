@@ -1,7 +1,7 @@
 <?php
 namespace RedCat\Artist\Plugin;
 use RedCat\Artist\ArtistPlugin;
-use RedCat\DataMap\Bases;
+use FoxORM\Bases;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 class DbImport extends ArtistPlugin{
 	protected $description = "Import from json lines format to a database";
