@@ -22,6 +22,10 @@ class InstallRedcatphp extends ArtistPlugin{
 			return;
 		}
 		
+		file_put_contents('vendor/.htaccess','Deny from All');
+		file_put_contents('vendor/bower-asset/.htaccess','Allow from All');
+		file_put_contents('vendor/npm-asset/.htaccess','Allow from All');
+		
 		
 		if(!file_exists($this->cwd.'artist')){
 			symlink('vendor/bin/artist','artist');
