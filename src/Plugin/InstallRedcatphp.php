@@ -18,17 +18,17 @@ class InstallRedcatphp extends ArtistPlugin{
 	protected function exec(){
 		
 		$this->runCmd('asset:jsalias');
-		if(is_file($f=$this->cwd.'packages/.redcat-installed')){
+		if(is_file($f=$this->cwd.'vendor/.redcat-installed')){
 			return;
 		}
 		
 		
 		if(!file_exists($this->cwd.'artist')){
-			symlink('packages/bin/artist','artist');
+			symlink('vendor/bin/artist','artist');
 		}
 		
-		if(is_dir($this->cwd.'packages/redcatphp/redcatphp')){
-			if($this->recursiveCopy($this->cwd.'packages/redcatphp/redcatphp',$this->cwd)){
+		if(is_dir($this->cwd.'vendor/redcatphp/redcatphp')){
+			if($this->recursiveCopy($this->cwd.'vendor/redcatphp/redcatphp',$this->cwd)){
 				$this->output->writeln('redcatphp bootstrap installed');
 			}
 			else{
@@ -117,7 +117,7 @@ class InstallRedcatphp extends ArtistPlugin{
 		$modified = false;
 		$path = $this->cwd.'config/app.php';
 		$config = new TokenTree($path);
-		$source = $this->cwd.'packages';
+		$source = $this->cwd.'vendor';
 		foreach(glob($source.DIRECTORY_SEPARATOR.'*',GLOB_ONLYDIR) as $p){
 			if(is_file($f=$p.DIRECTORY_SEPARATOR.'redcat.config.php')){
 				self::merge_recursive($config,new TokenTree($f));

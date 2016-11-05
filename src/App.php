@@ -39,7 +39,7 @@ class App{
 	function loadRedcat(){
 		if(!$this->redcat){
 			global $redcat;
-			if(!$redcat&&is_file($this->cwd.'redcat.php')&&is_file($this->cwd.'packages/autoload.php')){
+			if(!$redcat&&is_file($this->cwd.'redcat.php')&&is_file($this->cwd.'vendor/autoload.php')){
 				require_once $this->cwd.'redcat.php';
 			}
 			$this->redcat = $redcat;

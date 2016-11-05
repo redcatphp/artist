@@ -1,8 +1,8 @@
 #!/usr/bin/env php
 <?php
 if(ob_get_length()) ob_get_clean();
-if(file_exists(getcwd().'/packages/autoload.php')){
-	$loader = require getcwd().'/packages/autoload.php';
+if(file_exists(getcwd().'/vendor/autoload.php')){
+	$loader = require getcwd().'/vendor/autoload.php';
 }
 else{
 	$loader = require dirname(dirname(__FILE__)).'/vendor/autoload.php';

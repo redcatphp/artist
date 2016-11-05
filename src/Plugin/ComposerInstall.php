@@ -273,10 +273,6 @@ class ComposerInstall extends Composer{
 		else{
 			$json = [
 				"minimum-stability" => "dev",
-				"config" => [
-					"vendor-dir" => "packages",
-					"bin-dir" => "packages/bin"
-				]
 			];
 		}
 		return $this->composerJson = $json;

@@ -4,7 +4,7 @@ class ComposerArtist{
 	static function __callStatic($func,$args){
 		$event = array_shift($args);
 		$GLOBALS['ioDialogRedCat'] = $event->getIO();
-		$php = 'packages/bin/artist';
+		$php = 'vendor/bin/artist';
 		$func = self::snakeCase($func);
 		$_SERVER['argv'] = $GLOBALS['argv'] = [$php,$func];
 		$GLOBALS['autoExitArtistRedcat'] = false;
