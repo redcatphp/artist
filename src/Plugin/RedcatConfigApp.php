@@ -1,6 +1,6 @@
 <?php
 namespace RedCat\Artist\Plugin;
-class ConfigApp extends ConfigAbstract{
+class RedcatConfigApp extends RedcatConfigAbstract{
 	protected $description = "Modify config/app.php file";
 	protected $configFilePath = "config/app.php";
 }

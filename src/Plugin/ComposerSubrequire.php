@@ -2,7 +2,7 @@
 namespace RedCat\Artist\Plugin;
 use RedCat\Artist\ArtistPlugin;
 use BadMethodCallException;
-class Require2 extends ArtistPlugin{
+class ComposerSubrequire extends ArtistPlugin{
 	protected $description = "Install a subset of packages";
 	protected $args = [];
 	protected $opts = [];

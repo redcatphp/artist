@@ -1,7 +1,7 @@
 <?php
 namespace RedCat\Artist\Plugin;
 use RedCat\Artist\ArtistPlugin;
-class Up extends ArtistPlugin{
+class RedcatUp extends ArtistPlugin{
 	protected $description = "Turn off maintenance mode";
 	protected $args = [];
 	protected $opts = [];

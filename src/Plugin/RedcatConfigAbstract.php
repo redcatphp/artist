@@ -2,7 +2,7 @@
 namespace RedCat\Artist\Plugin;
 use RedCat\Artist\ArtistPlugin;
 use RedCat\Artist\TokenTree;
-abstract class ConfigAbstract extends ArtistPlugin{
+abstract class RedcatConfigAbstract extends ArtistPlugin{
 	protected $args = [
 		'key'=>"The key in '$' associative array, recursive access with dot, eg: dev.php for 'dev'=>['php'=>...]",
 		'value'=>"The value to assign",

@@ -5,7 +5,7 @@ use FoxORM\Bases;
 use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Helper\ProgressBar;
 use ForceUTF8\Encoding;
-class CsvImport extends ArtistPlugin{
+class ImportCsv extends ArtistPlugin{
 	protected $description = "Import from csv lines format to a database";
 
 	protected $args = [

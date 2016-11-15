@@ -5,7 +5,7 @@ use RecursiveDirectoryIterator;
 use RedCat\Artist\ArtistPlugin;
 use RedCat\Artist\TokenTree;
 use RedCat\Artist\App as ArtistApp;
-class InstallRedcatphp extends ArtistPlugin{
+class RedcatInstall extends ArtistPlugin{
 	protected $description = "Install redcatphp package from vendor dir to top level of application";
 	protected $args = [];
 	protected $opts = ['force'];

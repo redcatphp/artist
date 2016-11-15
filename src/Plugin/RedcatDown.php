@@ -1,7 +1,7 @@
 <?php
 namespace RedCat\Artist\Plugin;
 use RedCat\Artist\ArtistPlugin;
-class Down extends ArtistPlugin{
+class RedcatDown extends ArtistPlugin{
 	protected $description = "Turn on maintenance mode";
 	protected $args = [
 		'ip' => 'Allow an IP to access site in maintenance, separe them by space to add multiple',

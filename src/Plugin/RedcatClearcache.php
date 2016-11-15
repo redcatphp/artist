@@ -1,7 +1,7 @@
 <?php
 namespace RedCat\Artist\Plugin;
 use RedCat\Artist\ArtistPlugin;
-class Clearcache extends ArtistPlugin{
+class RedcatClearcache extends ArtistPlugin{
 	protected $description = "Clear the content of .tmp directory at root of application";
 	protected $args = [];
 	protected $opts = [];
