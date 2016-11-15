@@ -17,7 +17,7 @@ class RedcatInstall extends ArtistPlugin{
 	];
 	protected function exec(){
 		
-		$this->runCmd('asset:jsalias');
+		$this->runCmd('redcat:jsalias');
 		if(is_file($f=$this->cwd.'vendor/.redcat-installed')){
 			return;
 		}
