@@ -70,7 +70,7 @@ class App{
 				$reflectionClass = new ReflectionClass($class);
 				if(($class==Command::class||$reflectionClass->isSubclassOf(Command::class))&&$reflectionClass->isInstantiable()){
 					if($this->redcat){
-						$o = $this->redcat->create($class);
+						$o = $this->redcat->get($class);
 					}
 					else{
 						$o = new $class;
