@@ -22,6 +22,9 @@ class RedcatInstall extends ArtistPlugin{
 			return;
 		}
 		
+		if(!is_dir('vendor/bower-asset')) mkdir('vendor/bower-asset',0777,true);
+		if(!is_dir('vendor/npm-asset')) mkdir('vendor/npm-asset',0777,true);
+		
 		file_put_contents('vendor/.htaccess','Deny from All');
 		file_put_contents('vendor/bower-asset/.htaccess','Allow from All');
 		file_put_contents('vendor/npm-asset/.htaccess','Allow from All');
