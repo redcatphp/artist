@@ -6,15 +6,12 @@ class RedcatUp extends ArtistPlugin{
 	protected $args = [];
 	protected $opts = [];
 	protected function exec(){
-		$path = $this->cwd.'.htaccess';
-		$path = $this->cwd.'htaccess-307';
-		if(!is_file($this->cwd.'htaccess-up')){
+		if(!is_file($this->cwd.'index-up.phps')){
 			$this->output->writeln('Application is not in maintenance');
 			return;
 		}
-		file_put_contents($this->cwd.'.htaccess',file_get_contents($this->cwd.'htaccess-up'));
-		unlink($this->cwd.'maintenance.php');
-		unlink($this->cwd.'htaccess-up');
+		copy($this->cwd.'index-up.phps',$this->cwd.'index.php');
+		unlink($this->cwd.'index-up.phps');
 		$this->output->writeln('Application is not anymore in maintenance from now');
 	}
 }
