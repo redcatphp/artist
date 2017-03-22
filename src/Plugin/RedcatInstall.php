@@ -18,7 +18,7 @@ class RedcatInstall extends ArtistPlugin{
 	protected function exec(){
 		
 		$defaultConfigRedcat = $this->cwd.'vendor/redcatphp/redcatphp/config/default.php';
-		$defaultConfigLocal = $this->cwd.'vendor/config/default.php';
+		$defaultConfigLocal = $this->cwd.'config/default.php';
 		if(md5_file($defaultConfigRedcat)!=md5_file($defaultConfigLocal)&&copy($defaultConfigRedcat,$defaultConfigLocal)){
 			$this->output->writeln('config/default.php upgraded');
 		}
