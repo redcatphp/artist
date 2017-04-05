@@ -7,7 +7,7 @@ class ComposerEvents{
 			$c = $json['extra']['artist']['scripts']['class'];
 		}
 		else{
-			$c = 'MyApp\\Artist\Setup';
+			$c = 'App\\Artist\Setup';
 		}
 		if(class_exists($c)&&is_callable([$c,$func])){
 			call_user_func_array([$c,$func],$args);
