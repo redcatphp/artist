@@ -23,8 +23,6 @@ class RedcatInstall extends ArtistPlugin{
 			$this->output->writeln('config/default.php upgraded');
 		}
 		
-		$this->runCmd('redcat:jsalias');
-		
 		
 		if(is_file($f=$this->cwd.'vendor/.redcat-installed')){
 			return;
