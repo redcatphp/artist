@@ -5,6 +5,9 @@ use Symfony\Component\Console\Command\Command;
 use FilesystemIterator;
 use ReflectionClass;
 use Phar;
+
+use RedCat\Autoload\LowerCasePSR4;
+
 class App{
 	protected $commandPaths = [];
 	protected $registeredCommands = [];
@@ -60,12 +63,15 @@ class App{
 			if(in_array($reg,$this->registeredCommands)) continue;
 			$this->registeredCommands[] = $reg;
 			$this->loader->addPsr4($ns.'\\',$dir);
+			if(class_exists(LowerCasePSR4::class)){
+				LowerCasePSR4::getInstance()->addNamespace($ns,$dir)->splRegister();
+			}
 		}
 		foreach($this->commandPaths as $dir=>$ns){
 			$fileSystemIterator = new FilesystemIterator($dir);
 			foreach($fileSystemIterator as $fileInfo){
 				if($fileInfo->getExtension()!='php') continue;
-				$class = $ns.'\\'.pathinfo($fileInfo->getFilename(),PATHINFO_FILENAME);
+				$class = $ns.'\\'.$this->toClassName(pathinfo($fileInfo->getFilename(),PATHINFO_FILENAME));
 				if(!class_exists($class)) continue;
 				$reflectionClass = new ReflectionClass($class);
 				if(($class==Command::class||$reflectionClass->isSubclassOf(Command::class))&&$reflectionClass->isInstantiable()){
@@ -80,5 +86,8 @@ class App{
 			}
 		}
 		return $this;
+	}
+	protected function toClassName($word) {
+		return ucfirst(str_replace(' ', '', ucwords(strtr($word, '-', ' '))));
 	}
 }
